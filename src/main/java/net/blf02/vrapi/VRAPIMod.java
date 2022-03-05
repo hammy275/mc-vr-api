@@ -28,7 +28,6 @@ public class VRAPIMod {
         MinecraftForge.EVENT_BUS.register(new ClientSubscriber());
         MinecraftForge.EVENT_BUS.register(new CommonSubscriber());
         if (Constants.doDebugging) {
-            DebugSubscriber.initDebug();
             MinecraftForge.EVENT_BUS.register(new DebugSubscriber());
         }
 

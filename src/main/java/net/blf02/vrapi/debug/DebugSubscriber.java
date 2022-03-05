@@ -16,10 +16,6 @@ public class DebugSubscriber {
 
     private static final boolean SPAM_CONSOLE_WITH_VR_DATA = true; // Spam the console when debugging
 
-    public static void initDebug() {
-
-    }
-
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) return;

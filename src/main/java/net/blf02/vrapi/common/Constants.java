@@ -3,7 +3,7 @@ package net.blf02.vrapi.common;
 public class Constants {
 
     // Debugging
-    public static final boolean doDebugging = true;
+    public static final boolean doDebugging = false;
 
     // String constants
     public static final String VIVECRAFT_PACKAGE = "org.vivecraft";
