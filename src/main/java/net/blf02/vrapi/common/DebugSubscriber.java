@@ -1,5 +1,6 @@
 package net.blf02.vrapi.common;
 
+import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.api.VRAPI;
 import net.blf02.vrapi.api.data.VRPlayer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,9 +10,12 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.Level;
 
 @Mod.EventBusSubscriber
 public class DebugSubscriber {
+
+    private static final boolean SPAM_CONSOLE_WITH_VR_DATA = true; // Spam the console when debugging
 
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent event) {
@@ -19,6 +23,7 @@ public class DebugSubscriber {
         PlayerEntity player = event.player;
         VRPlayer vrPlayer = VRAPI.getVRPlayer(player);
         if (vrPlayer == null) return;
+        if (SPAM_CONSOLE_WITH_VR_DATA) VRAPIMod.LOGGER.log(Level.INFO, vrPlayer.getController0().getPosition());
         for (int i = 0; i < 20; i++) {
             Vector3d toCheckHMD = vrPlayer.getHMD().getPosition().add(vrPlayer.getHMD().getLookVec().multiply(i, i, i));
             Vector3d toCheck0 = vrPlayer.getController0().getPosition().add(vrPlayer.getController0().getLookVec().multiply(i, i, i));
