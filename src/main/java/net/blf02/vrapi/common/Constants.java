@@ -2,6 +2,9 @@ package net.blf02.vrapi.common;
 
 public class Constants {
 
+    // Debugging
+    public static final boolean doDebugging = true;
+
     // String constants
     public static final String VIVECRAFT_PACKAGE = "org.vivecraft";
     public static final String VIVECRAFT_GAMEPLAY_PACKAGE = VIVECRAFT_PACKAGE + ".gameplay";
