@@ -1,6 +1,6 @@
 package net.blf02.vrapi.server;
 
-import net.blf02.vrapi.api.data.VRPlayer;
+import net.blf02.vrapi.data.VRPlayer;
 
 import java.util.HashMap;
 

@@ -1,6 +1,6 @@
 package net.blf02.vrapi.common.network.packets;
 
-import net.blf02.vrapi.api.data.VRPlayer;
+import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.server.Tracker;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

@@ -1,6 +1,6 @@
 package net.blf02.vrapi.client;
 
-import net.blf02.vrapi.api.data.VRPlayer;
+import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
 import net.minecraftforge.api.distmarker.Dist;

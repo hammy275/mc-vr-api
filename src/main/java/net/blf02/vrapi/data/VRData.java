@@ -1,5 +1,6 @@
-package net.blf02.vrapi.api.data;
+package net.blf02.vrapi.data;
 
+import net.blf02.vrapi.api.data.IVRData;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -8,7 +9,7 @@ import net.minecraft.util.math.vector.Vector3d;
  *
  * This class contains information about a given object tracked in VR (the HMD or a controller).
  */
-public class VRData {
+public class VRData implements IVRData {
 
     protected final Vector3d position;
     protected final Vector3d lookVec;

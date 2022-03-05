@@ -1,8 +1,8 @@
 package net.blf02.vrapi.client;
 
 import net.blf02.vrapi.VRAPIMod;
-import net.blf02.vrapi.api.data.VRData;
-import net.blf02.vrapi.api.data.VRPlayer;
+import net.blf02.vrapi.data.VRData;
+import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.common.Constants;
 import net.minecraft.util.math.vector.Vector3d;
 import org.apache.logging.log4j.Level;

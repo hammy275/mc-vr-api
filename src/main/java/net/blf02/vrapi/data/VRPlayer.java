@@ -1,11 +1,12 @@
-package net.blf02.vrapi.api.data;
+package net.blf02.vrapi.data;
 
+import net.blf02.vrapi.api.data.IVRPlayer;
 import net.minecraft.network.PacketBuffer;
 
 /**
  * VRPlayer contains all the information related to a player in VR.
  */
-public class VRPlayer {
+public class VRPlayer implements IVRPlayer {
 
     protected final VRData hmd;
     protected final VRData controller0;

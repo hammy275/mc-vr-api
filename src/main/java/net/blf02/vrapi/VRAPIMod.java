@@ -2,8 +2,9 @@ package net.blf02.vrapi;
 
 import net.blf02.vrapi.client.ClientSubscriber;
 import net.blf02.vrapi.client.VRDataGrabber;
+import net.blf02.vrapi.common.APIProviderInit;
 import net.blf02.vrapi.common.CommonSubscriber;
-import net.blf02.vrapi.common.DebugSubscriber;
+import net.blf02.vrapi.debug.DebugSubscriber;
 import net.blf02.vrapi.common.Constants;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
@@ -27,6 +28,7 @@ public class VRAPIMod {
         MinecraftForge.EVENT_BUS.register(new ClientSubscriber());
         MinecraftForge.EVENT_BUS.register(new CommonSubscriber());
         if (Constants.doDebugging) {
+            DebugSubscriber.initDebug();
             MinecraftForge.EVENT_BUS.register(new DebugSubscriber());
         }
 
@@ -37,5 +39,6 @@ public class VRAPIMod {
     private void commonSetup(final FMLCommonSetupEvent event) {
         Network.INSTANCE.registerMessage(1, VRDataPacket.class, VRDataPacket::encode, VRDataPacket::decode,
                 VRDataPacket::handle);
+        APIProviderInit.init();
     }
 }
