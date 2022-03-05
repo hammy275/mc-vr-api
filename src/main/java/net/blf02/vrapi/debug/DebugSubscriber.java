@@ -22,11 +22,11 @@ public class DebugSubscriber {
         PlayerEntity player = event.player;
         IVRPlayer vrPlayer = DebugPlugin.vrAPI.getVRPlayer(player);
         if (vrPlayer == null) return;
-        if (SPAM_CONSOLE_WITH_VR_DATA) VRAPIMod.LOGGER.log(Level.INFO, vrPlayer.getController0().getPosition());
+        if (SPAM_CONSOLE_WITH_VR_DATA) VRAPIMod.LOGGER.log(Level.INFO, vrPlayer.getController0().position());
         for (int i = 0; i < 20; i++) {
-            Vector3d toCheckHMD = vrPlayer.getHMD().getPosition().add(vrPlayer.getHMD().getLookVec().multiply(i, i, i));
-            Vector3d toCheck0 = vrPlayer.getController0().getPosition().add(vrPlayer.getController0().getLookVec().multiply(i, i, i));
-            Vector3d toCheck1 = vrPlayer.getController1().getPosition().add(vrPlayer.getController1().getLookVec().multiply(i, i, i));
+            Vector3d toCheckHMD = vrPlayer.getHMD().position().add(vrPlayer.getHMD().getLookAngle().multiply(i, i, i));
+            Vector3d toCheck0 = vrPlayer.getController0().position().add(vrPlayer.getController0().getLookAngle().multiply(i, i, i));
+            Vector3d toCheck1 = vrPlayer.getController1().position().add(vrPlayer.getController1().getLookAngle().multiply(i, i, i));
 
             if (player.level.isClientSide) {
                 player.level.addParticle(ParticleTypes.SMOKE, toCheckHMD.x, toCheckHMD.y, toCheckHMD.z, 0, 0, 0);

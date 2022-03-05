@@ -23,7 +23,7 @@ public class VRData implements IVRData {
      * Get the position of the object in Minecraft
      * @return A Vector3d representing the object's location in Minecraft
      */
-    public Vector3d getPosition() {
+    public Vector3d position() {
         return this.position;
     }
 
@@ -31,7 +31,7 @@ public class VRData implements IVRData {
      * Get the direction of the object
      * @return A vector representing where the object is pointing on the x, y, and z axis.
      */
-    public Vector3d getLookVec() {
+    public Vector3d getLookAngle() {
         return this.lookVec;
     }
 
