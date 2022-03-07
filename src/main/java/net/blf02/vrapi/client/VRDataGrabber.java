@@ -19,8 +19,8 @@ public class VRDataGrabber {
 
     // VRData from Vivecraft
     protected static Field VRData_hmd;
-    protected static Field VRData_h0;
-    protected static Field VRData_h1;
+    protected static Field VRData_c0;
+    protected static Field VRData_c1;
 
     // VRDevicePose from Vivecraft
     protected static Method VRDevicePose_getPosition;
@@ -34,8 +34,8 @@ public class VRDataGrabber {
             VRPlayer_vrdata_world_post = getField(Constants.VRPlayerRaw, "vrdata_world_post");
 
             VRData_hmd = getField(Constants.VRDataRaw, "hmd");
-            VRData_h0 = getField(Constants.VRDataRaw, "h0");
-            VRData_h1 = getField(Constants.VRDataRaw, "h1");
+            VRData_c0 = getField(Constants.VRDataRaw, "c0");
+            VRData_c1 = getField(Constants.VRDataRaw, "c1");
 
             VRDevicePose_getPosition = getMethod(Constants.VRDevicePoseRaw, "getPosition");
             VRDevicePose_getDirection = getMethod(Constants.VRDevicePoseRaw, "getDirection");
@@ -52,8 +52,8 @@ public class VRDataGrabber {
             Object vrDataRaw = VRPlayer_vrdata_world_post.get(vrPlayerRaw); // Get the "VRData" from Vivecraft
 
             Object hmdDevicePoseRaw = VRData_hmd.get(vrDataRaw); // Get the VRDevicePose for the HMD
-            Object c0DevicePoseRaw = VRData_h0.get(vrDataRaw);
-            Object c1DevicePoseRaw = VRData_h1.get(vrDataRaw);
+            Object c0DevicePoseRaw = VRData_c0.get(vrDataRaw);
+            Object c1DevicePoseRaw = VRData_c1.get(vrDataRaw);
 
             Vector3d hmdPosition = (Vector3d) VRDevicePose_getPosition.invoke(hmdDevicePoseRaw); // Gets the position for the HMD in the world.
             Vector3d hmdLookVec = (Vector3d) VRDevicePose_getDirection.invoke(hmdDevicePoseRaw);
