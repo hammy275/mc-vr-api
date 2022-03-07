@@ -35,8 +35,6 @@ authors="hammy3502" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 VR API mod that allows mods to integrate into Vivecraft 1.16.5.
-
-Note that those not in VR may still require this mod!
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.examplemod]] #optional
