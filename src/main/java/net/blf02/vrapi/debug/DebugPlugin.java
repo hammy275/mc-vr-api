@@ -12,6 +12,7 @@ public class DebugPlugin implements VRAPIPluginProvider {
     @Override
     public void getVRAPI(IVRAPI api) {
         vrAPI = api;
+        vrAPI.registerVRPlayerTickHandler(DebugSubscriber::onVRTick);
     }
 
     public boolean isPluginLoaded() {

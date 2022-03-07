@@ -72,6 +72,18 @@ public class VRDataGrabber {
         }
     }
 
+    public static boolean inVR() {
+        if (!Constants.clientHasVivecraft()) {
+            return false;
+        }
+        try {
+            Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Try to get vrPlayer from Vivecraft
+            return true; // If we got the above, we're definitely in VR.
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            return false; // If we failed to grab the above, we definitely are NOT in VR.
+        }
+    }
+
     public static Field getField(Class<?> clazz, String field) {
         try {
             return clazz.getField(field);
