@@ -2,12 +2,13 @@ package net.blf02.vrapi.debug;
 
 import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.api.data.IVRPlayer;
-import net.blf02.vrapi.api.vrevent.IVRPlayerTick;
+import net.blf02.vrapi.event.VRPlayerTickEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
 
@@ -16,10 +17,11 @@ public class DebugSubscriber {
 
     private static final boolean SPAM_CONSOLE_WITH_VR_DATA = true; // Spam the console when debugging
 
-    public static void onVRTick(IVRPlayerTick event) {
-        if (event.getPhase() == TickEvent.Phase.START) return;
-        PlayerEntity player = event.getPlayer();
-        IVRPlayer vrPlayer = event.getVRPlayer();
+    @SubscribeEvent
+    public void onVRTick(VRPlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) return;
+        PlayerEntity player = event.player;
+        IVRPlayer vrPlayer = event.vrPlayer;
         if (SPAM_CONSOLE_WITH_VR_DATA) VRAPIMod.LOGGER.log(Level.INFO, vrPlayer.getController0().position());
         for (int i = 0; i < 20; i++) {
             Vector3d toCheckHMD = vrPlayer.getHMD().position().add(vrPlayer.getHMD().getLookAngle().multiply(i, i, i));

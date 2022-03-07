@@ -1,8 +1,9 @@
 package net.blf02.vrapi.common;
 
 
+import net.blf02.vrapi.event.VRPlayerTickEvent;
 import net.blf02.vrapi.server.Tracker;
-import net.blf02.vrapi.vrevent.VRPlayerTick;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +19,9 @@ public class CommonSubscriber {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        new VRPlayerTick(event.player, event.phase, event.side);
+        VRPlayerTickEvent vrEvent = new VRPlayerTickEvent(event.player, event.phase, event.side);
+        if (vrEvent.vrPlayer != null) {
+            MinecraftForge.EVENT_BUS.post(vrEvent);
+        }
     }
 }

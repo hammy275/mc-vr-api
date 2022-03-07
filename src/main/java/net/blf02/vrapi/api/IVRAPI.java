@@ -1,10 +1,7 @@
 package net.blf02.vrapi.api;
 
 import net.blf02.vrapi.api.data.IVRPlayer;
-import net.blf02.vrapi.api.vrevent.IVRPlayerTick;
 import net.minecraft.entity.player.PlayerEntity;
-
-import java.util.function.Consumer;
 
 public interface IVRAPI {
 
@@ -24,12 +21,4 @@ public interface IVRAPI {
      * @return true if the Player is in VR. False otherwise.
      */
     public boolean playerInVR(PlayerEntity player);
-
-    /**
-     * Register a handler for the VRPlayerTick "VR event".
-     * See `net.blf02.vrapi.api.vrevent.IVRPlayerTick for more info on when/how the consumer is called.
-     *
-     * @param handler A function that accepts an IVRPlayerTick.
-     */
-    public void registerVRPlayerTickHandler(Consumer<IVRPlayerTick> handler);
 }
