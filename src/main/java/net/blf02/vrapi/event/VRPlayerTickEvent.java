@@ -9,9 +9,24 @@ import net.minecraftforge.fml.LogicalSide;
 
 public class VRPlayerTickEvent extends Event {
 
+    /**
+     * Contains the player this event is fired for
+     */
     public final PlayerEntity player;
+
+    /**
+     * Contains the phase from TickEvent.PlayerTickEvent this is fired on.
+     */
     public final TickEvent.Phase phase;
+
+    /**
+     * Contains the logical side this event is fired on.
+     */
     public final LogicalSide side;
+
+    /**
+     * Contains the IVRPlayer instance for the player
+     */
     public final IVRPlayer vrPlayer;
 
     public VRPlayerTickEvent(PlayerEntity player, TickEvent.Phase phase, LogicalSide side) {
