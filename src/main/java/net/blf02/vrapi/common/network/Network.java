@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class Network {
 
-    private static final String PROTOCOL_VERSION = "1.0.x";
+    private static final String PROTOCOL_VERSION = "1.1.x";
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(VRAPIMod.MOD_ID, "vr_data"),

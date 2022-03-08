@@ -3,10 +3,17 @@ package net.blf02.vrapi.common;
 import net.blf02.vrapi.api.IVRAPI;
 import net.blf02.vrapi.api.data.IVRPlayer;
 import net.blf02.vrapi.client.VRDataGrabber;
+import net.blf02.vrapi.common.network.Network;
+import net.blf02.vrapi.common.network.packets.VRRumblePacket;
 import net.blf02.vrapi.server.Tracker;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 
 public class VRAPI implements IVRAPI {
 
@@ -40,6 +47,49 @@ public class VRAPI implements IVRAPI {
             return VRDataGrabber.inVR();
         } else {
             return Tracker.playerToVR.containsKey(player.getGameProfile().getName());
+        }
+    }
+
+    /**
+     * Triggers a haptic pulse/rumble for the controller. Much easier to understand version.
+     *
+     * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
+     *
+     * @param controllerNum Controller number to rumble.
+     * @param durationSeconds Number of seconds to rumble
+     * @param player The player to rumble for. If null, this function does nothing server-side. If non-null, a packet
+     *               is sent to the specified player to rumble server side.
+     */
+    public void triggerHapticPulse(int controllerNum, float durationSeconds, @Nullable ServerPlayerEntity player) {
+        // Constants come from the original Vivecraft code
+        triggerHapticPulse(controllerNum, durationSeconds, 160, 1, 0, player);
+    }
+
+    /**
+     * Triggers a haptic pulse/rumble for the controller.
+     *
+     * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
+     *
+     * @param controllerNum Controller number to rumble
+     * @param durationSeconds Number of seconds to rumble
+     * @param frequency Literal frequency
+     * @param amplitude Amplitude for rumble
+     * @param delaySeconds How long until the rumble should run
+     * @param player The player to rumble for. If null, this function does nothing server-side. If non-null, a packet
+     *               is sent to the specified player to rumble server side.
+     */
+    public void triggerHapticPulse(int controllerNum, float durationSeconds, float frequency, float amplitude, float delaySeconds,
+                                   @Nullable ServerPlayerEntity player) {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            try {
+                VRDataGrabber.MCVR_triggerHapticPulse.invoke(VRDataGrabber.Minecraft_vr_Instance,
+                        Constants.ControllerType_ENUMS[controllerNum], durationSeconds, frequency, amplitude, delaySeconds);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("Could not run triggerHapticPulse function. Not sure why, though...");
+            }
+        } else if (player != null) {
+            Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                    new VRRumblePacket(controllerNum, durationSeconds, frequency, amplitude, delaySeconds));
         }
     }
 }

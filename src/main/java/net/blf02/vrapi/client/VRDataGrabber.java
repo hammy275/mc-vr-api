@@ -1,9 +1,10 @@
 package net.blf02.vrapi.client;
 
 import net.blf02.vrapi.VRAPIMod;
+import net.blf02.vrapi.common.Constants;
 import net.blf02.vrapi.data.VRData;
 import net.blf02.vrapi.data.VRPlayer;
-import net.blf02.vrapi.common.Constants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.Vector3d;
 import org.apache.logging.log4j.Level;
 
@@ -13,32 +14,50 @@ import java.lang.reflect.Method;
 
 public class VRDataGrabber {
 
+    // vr field in net.minecraft.client.Minecraft
+    public static Field Minecraft_vr;  // Type MCVR
+    public static Object Minecraft_vr_Instance; // Type MCVR
+
     // VRPlayer from Vivecraft
-    protected static Method VRPlayer_GET;
-    protected static Field VRPlayer_vrdata_world_post;
+    protected static Method VRPlayer_GET; // Returns VRPlayer
+    protected static Field VRPlayer_vrdata_world_post; // Type VRData
 
     // VRData from Vivecraft
-    protected static Field VRData_hmd;
-    protected static Field VRData_c0;
-    protected static Field VRData_c1;
+    protected static Field VRData_hmd; // Type VRDevicePose
+    protected static Field VRData_c0; // Type VRDevicePose
+    protected static Field VRData_c1; // Type VRDevicePose
 
     // VRDevicePose from Vivecraft
-    protected static Method VRDevicePose_getPosition;
-    protected static Method VRDevicePose_getDirection;
+    protected static Method VRDevicePose_getPosition; // Returns Vector3d (vanilla type)
+    protected static Method VRDevicePose_getDirection; // Returns Vector3d (vanilla type)
+
+    // MCVR from Vivecraft
+    public static Method MCVR_triggerHapticPulse; // Returns void
 
     public static void init() {
         if (!Constants.clientHasVivecraft()) {
             VRAPIMod.LOGGER.log(Level.INFO, "Vivecraft was not detected! Not reflecting...");
         } else {
-            VRPlayer_GET = getMethod(Constants.VRPlayerRaw, "get");
-            VRPlayer_vrdata_world_post = getField(Constants.VRPlayerRaw, "vrdata_world_post");
+            try {
+                VRPlayer_GET = getMethod(Constants.VRPlayerRaw, "get");
+                VRPlayer_vrdata_world_post = getField(Constants.VRPlayerRaw, "vrdata_world_post");
 
-            VRData_hmd = getField(Constants.VRDataRaw, "hmd");
-            VRData_c0 = getField(Constants.VRDataRaw, "c0");
-            VRData_c1 = getField(Constants.VRDataRaw, "c1");
+                VRData_hmd = getField(Constants.VRDataRaw, "hmd");
+                VRData_c0 = getField(Constants.VRDataRaw, "c0");
+                VRData_c1 = getField(Constants.VRDataRaw, "c1");
 
-            VRDevicePose_getPosition = getMethod(Constants.VRDevicePoseRaw, "getPosition");
-            VRDevicePose_getDirection = getMethod(Constants.VRDevicePoseRaw, "getDirection");
+                VRDevicePose_getPosition = getMethod(Constants.VRDevicePoseRaw, "getPosition");
+                VRDevicePose_getDirection = getMethod(Constants.VRDevicePoseRaw, "getDirection");
+
+                Minecraft_vr = getField(Minecraft.class, "vr");
+                Minecraft_vr_Instance = Minecraft_vr.get(Minecraft.getInstance());
+
+                MCVR_triggerHapticPulse = getMethod(Constants.MCVR, "triggerHapticPulse",
+                        Constants.ControllerType, float.class, float.class, float.class, float.class);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Fatal error! Could not get an important object! Please report this!");
+            }
+
         }
     }
 
@@ -92,9 +111,9 @@ public class VRDataGrabber {
         }
     }
 
-    public static Method getMethod(Class<?> clazz, String method) {
+    public static Method getMethod(Class<?> clazz, String method, Class<?>... parameterTypes) {
         try {
-            return clazz.getMethod(method);
+            return clazz.getMethod(method, parameterTypes);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException("Could not load method " + method + " from " + clazz);
         }
