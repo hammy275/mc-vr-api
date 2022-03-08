@@ -11,13 +11,10 @@ This mod serves to act as an API for Vivecraft, to allow mod developers to inter
 Add the following to your `build.gradle`:
 
 ```
-// Note: This uses HTTP, so don't use this on an untrusted network.
-// There are plans to switch to https and find an actual provider soon(TM)
 repositories {
     maven {
         name = "blf02"
-        url = "http://blf02.net:4567"
-        allowInsecureProtocol = true
+        url = "https://blf02.net:4567"
     }
 }
 ```
