@@ -76,6 +76,8 @@ Of note are three important interfaces:
 
 To make my own mods (and hopefully other people's mods) work better in the context of VR, and to allow for the creation of VR-specific mods, by both others and me.
 
+If you want an example of this, I've created a small "demo" mod that shows off the kinds of things this API can do. It's called [mc-vr-playground](https://github.com/hammy3502/mc-vr-playground), which you can download and throw into any installation!
+
 ## Some Questions and Answers
 
 #### Q: How about 1.17/1.18 and higher?
