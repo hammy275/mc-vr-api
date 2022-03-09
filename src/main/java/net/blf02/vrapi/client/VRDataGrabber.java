@@ -26,6 +26,8 @@ public class VRDataGrabber {
     protected static Field VRData_hmd; // Type VRDevicePose
     protected static Field VRData_c0; // Type VRDevicePose
     protected static Field VRData_c1; // Type VRDevicePose
+    protected static Field VRData_eye0; // Type VRDevicePose (corresponds to left eye)
+    protected static Field VRData_eye1; // Type VRDevicePose (corresponds to right eye)
 
     // VRDevicePose from Vivecraft
     protected static Method VRDevicePose_getPosition; // Returns Vector3d (vanilla type)
@@ -45,6 +47,8 @@ public class VRDataGrabber {
                 VRData_hmd = getField(Constants.VRDataRaw, "hmd");
                 VRData_c0 = getField(Constants.VRDataRaw, "c0");
                 VRData_c1 = getField(Constants.VRDataRaw, "c1");
+                VRData_eye0 = getField(Constants.VRDataRaw, "eye0");
+                VRData_eye1 = getField(Constants.VRDataRaw, "eye1");
 
                 VRDevicePose_getPosition = getMethod(Constants.VRDevicePoseRaw, "getPosition");
                 VRDevicePose_getDirection = getMethod(Constants.VRDevicePoseRaw, "getDirection");
@@ -73,6 +77,8 @@ public class VRDataGrabber {
             Object hmdDevicePoseRaw = VRData_hmd.get(vrDataRaw); // Get the VRDevicePose for the HMD
             Object c0DevicePoseRaw = VRData_c0.get(vrDataRaw);
             Object c1DevicePoseRaw = VRData_c1.get(vrDataRaw);
+            Object eye0DevicePoseRaw = VRData_eye0.get(vrDataRaw);
+            Object eye1DevicePoseRaw = VRData_eye1.get(vrDataRaw);
 
             Vector3d hmdPosition = (Vector3d) VRDevicePose_getPosition.invoke(hmdDevicePoseRaw); // Gets the position for the HMD in the world.
             Vector3d hmdLookVec = (Vector3d) VRDevicePose_getDirection.invoke(hmdDevicePoseRaw);
@@ -82,8 +88,16 @@ public class VRDataGrabber {
 
             Vector3d c1Position = (Vector3d) VRDevicePose_getPosition.invoke(c1DevicePoseRaw);
             Vector3d c1LookVec = (Vector3d) VRDevicePose_getDirection.invoke(c1DevicePoseRaw);
+
+            Vector3d eye0Position = (Vector3d) VRDevicePose_getPosition.invoke(eye0DevicePoseRaw);
+            Vector3d eye0LookVec = (Vector3d) VRDevicePose_getDirection.invoke(eye0DevicePoseRaw);
+
+            Vector3d eye1Position = (Vector3d) VRDevicePose_getPosition.invoke(eye1DevicePoseRaw);
+            Vector3d eye1LookVec = (Vector3d) VRDevicePose_getDirection.invoke(eye1DevicePoseRaw);
+
             return new VRPlayer(new VRData(hmdPosition, hmdLookVec),
-                    new VRData(c0Position, c0LookVec), new VRData(c1Position, c1LookVec));
+                    new VRData(c0Position, c0LookVec), new VRData(c1Position, c1LookVec),
+                    new VRData(eye0Position, eye0LookVec), new VRData(eye1Position, eye1LookVec));
         }  catch (InvocationTargetException | IllegalAccessException e) {
             // We shouldn't error here, as we know these fields and methods exist due to getField() and getMethod()
             // combined with having access to Vivecraft's codebase on GitHub

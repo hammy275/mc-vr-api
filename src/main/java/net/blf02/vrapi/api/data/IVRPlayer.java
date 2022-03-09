@@ -29,4 +29,23 @@ public interface IVRPlayer {
      * @return IVRData representing the requested controller
      */
     public IVRData getController(int controller);
+
+    /**
+     * Get Left Eye information
+     * @return IVRData representing the position and look direction of the left eye
+     */
+    public IVRData getLeftEye();
+
+    /**
+     * Get Right Eye information
+     * @return IVRData representing the position and look direction of the right eye
+     */
+    public IVRData getRightEye();
+
+    /**
+     * Get information for an eye.
+     * @param eye Eye number to get. 0 for left, 1 for right.
+     * @return IVRData representing the eye.
+     */
+    public IVRData getEye(int eye);
 }
