@@ -25,7 +25,7 @@ Add the following to the dependencies section of your `build.gradle`:
 compileOnly fg.deobf("net.blf02:vrapi:VERSION")
 runtimeOnly fg.deobf("net.blf02:vrapi:VERSION")
 ```
-Where `VERSION` is the version you want to use (such as `1.0.0`)
+Where `VERSION` is the version you want to use (such as `1.1.0`)
 
 After adding these to your `build.gradle`, exit and re-open your IDE. You may need to run `gradlew --refresh-dependencies` afterwards (or `./gradlew --refresh-dependencies` if you're on Linux).
 
