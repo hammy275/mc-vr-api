@@ -9,6 +9,18 @@ import javax.annotation.Nullable;
 public interface IVRAPI {
 
     /**
+     * Gets the API version as a string.
+     * @return The version string using semantic versioning. Will always be of the form x.y.z, with no additional data.
+     */
+    public String getVersionString();
+
+    /**
+     * Gets the API version as an array of ints.
+     * @return The version using semantic versioning in the form [major, minor, patch].
+     */
+    public int[] getVersionArray();
+
+    /**
      * Gets the VRPlayer that represents all VR information about a player.
      * If this function returns null, the player either isn't in VR, or the server doesn't yet know that they're in
      * VR.

@@ -20,6 +20,24 @@ public class VRAPI implements IVRAPI {
     public static final IVRAPI VRAPIInstance = new VRAPI();
 
     /**
+     * Gets the API version as a string.
+     * @return The version string using semantic versioning. Will always be of the form x.y.z, with no additional data.
+     */
+    @Override
+    public String getVersionString() {
+        return Constants.getVersion();
+    }
+
+    /**
+     * Gets the API version as an array of ints.
+     * @return The version using semantic versioning in the form [major, minor, patch].
+     */
+    @Override
+    public int[] getVersionArray() {
+        return Constants.version;
+    }
+
+    /**
      * Gets the VRPlayer that represents all VR information about a player.
      * If this function returns null, the player either isn't in VR, or the server doesn't yet know that they're in
      * VR.
