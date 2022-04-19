@@ -2,6 +2,7 @@ package net.blf02.vrapi.common;
 
 import net.blf02.vrapi.api.IVRAPI;
 import net.blf02.vrapi.api.data.IVRPlayer;
+import net.blf02.vrapi.client.ServerHasAPI;
 import net.blf02.vrapi.client.VRDataGrabber;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRRumblePacket;
@@ -35,6 +36,22 @@ public class VRAPI implements IVRAPI {
     @Override
     public int[] getVersionArray() {
         return Constants.version;
+    }
+
+    /**
+     * Returns whether the API is available to access on both the client-side and the server-side.
+     * This does NOT indiciate if a player is in VR or not. Rather, it indicates if the API is open to use on both
+     * logical sides.
+     * @param player The player to check.
+     * @return true if both the server and the client have the API installed. false otherwise.
+     */
+    @Override
+    public boolean apiActive(PlayerEntity player) {
+        if (player.level.isClientSide) {
+            return ServerHasAPI.serverHasAPI;
+        } else {
+            return Tracker.playersInVR.contains(player.getGameProfile().getName());
+        }
     }
 
     /**

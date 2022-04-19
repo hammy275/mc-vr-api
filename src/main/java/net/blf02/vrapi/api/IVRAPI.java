@@ -21,6 +21,15 @@ public interface IVRAPI {
     public int[] getVersionArray();
 
     /**
+     * Returns whether the API is available to access on both the client-side and the server-side.
+     * This does NOT indiciate if a player is in VR or not. Rather, it indicates if the API is open to use on both
+     * logical sides.
+     * @param player The player to check.
+     * @return true if both the server and the client have the API installed. false otherwise.
+     */
+    public boolean apiActive(PlayerEntity player);
+
+    /**
      * Gets the VRPlayer that represents all VR information about a player.
      * If this function returns null, the player either isn't in VR, or the server doesn't yet know that they're in
      * VR.

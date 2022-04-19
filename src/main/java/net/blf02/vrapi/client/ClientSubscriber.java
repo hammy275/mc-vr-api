@@ -1,10 +1,13 @@
 package net.blf02.vrapi.client;
 
-import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
+import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
+import net.blf02.vrapi.data.VRPlayer;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +23,23 @@ public class ClientSubscriber {
             if (player != null) {
                 Network.INSTANCE.sendToServer(new VRDataPacket(player));
             }
+            if (ServerHasAPI.countForAPIResponse) {
+                if (--ServerHasAPI.apiResponseCountdown < 1) {
+                    ServerHasAPI.countForAPIResponse = false;
+                    event.player.sendMessage(
+                            new StringTextComponent("Server does not have API mod; modded VR features may not work!"),
+                            event.player.getUUID());
+                }
+            }
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onLogin(ClientPlayerNetworkEvent.LoggedInEvent event) {
+        ServerHasAPI.serverHasAPI = false;
+        ServerHasAPI.countForAPIResponse = true;
+        ServerHasAPI.apiResponseCountdown = 100;
+        Network.INSTANCE.sendToServer(new VersionSyncPacket(Network.PROTOCOL_VERSION));
     }
 }

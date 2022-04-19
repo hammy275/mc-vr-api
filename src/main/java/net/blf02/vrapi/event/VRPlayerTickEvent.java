@@ -33,7 +33,7 @@ public class VRPlayerTickEvent extends Event {
         this.player = player;
         this.phase = phase;
         this.side = side;
-        if (VRAPI.VRAPIInstance.playerInVR(player)) {
+        if (VRAPI.VRAPIInstance.playerInVR(player) && VRAPI.VRAPIInstance.apiActive(player)) {
             vrPlayer = VRAPI.VRAPIInstance.getVRPlayer(player);
         } else {
             vrPlayer = null;

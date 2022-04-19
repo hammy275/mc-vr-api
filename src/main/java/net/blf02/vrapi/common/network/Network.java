@@ -8,12 +8,12 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class Network {
 
-    private static final String PROTOCOL_VERSION = Constants.getNetworkVersion();
+    public static final String PROTOCOL_VERSION = Constants.getNetworkVersion();
 
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(VRAPIMod.MOD_ID, "vr_data"),
             () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
+            (ignored) -> true,
+            (ignored) -> true
     );
 }

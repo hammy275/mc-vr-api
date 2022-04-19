@@ -15,6 +15,7 @@ public class CommonSubscriber {
     @SubscribeEvent
     public void onPlayerDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
         Tracker.playerToVR.remove(event.getPlayer().getGameProfile().getName());
+        Tracker.playersInVR.remove(event.getPlayer().getGameProfile().getName());
     }
 
     @SubscribeEvent
