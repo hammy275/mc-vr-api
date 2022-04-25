@@ -20,4 +20,22 @@ public interface IVRData {
      * @return A Vector3d representing the object's location in Minecraft
      */
     public Vector3d position();
+
+    /**
+     * Returns the roll of the object in degrees.
+     * @return Object roll in degrees.
+     */
+    public float getRoll();
+
+    /**
+     * Returns the pitch of the object in degrees.
+     * @return Object pitch in degrees.
+     */
+    public float getPitch();
+
+    /**
+     * Returns the yaw of the object in degrees.
+     * @return Object yaw in degrees.
+     */
+    public float getYaw();
 }

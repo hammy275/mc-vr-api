@@ -13,10 +13,12 @@ public class VRData implements IVRData {
 
     protected final Vector3d position;
     protected final Vector3d lookVec;
+    protected final float roll;
 
-    public VRData(Vector3d position, Vector3d lookVec) {
+    public VRData(Vector3d position, Vector3d lookVec, float roll) {
         this.position = position;
         this.lookVec = lookVec;
+        this.roll = roll;
     }
 
     /**
@@ -25,6 +27,31 @@ public class VRData implements IVRData {
      */
     public Vector3d position() {
         return this.position;
+    }
+
+    /**
+     * Returns the roll of the controller in degrees.
+     * @return Controller roll in degrees.
+     */
+    @Override
+    public float getRoll() {
+        return roll;
+    }
+
+    /**
+     * Returns the pitch of the object in degrees.
+     * @return Object pitch in degrees.
+     */
+    public float getPitch() {
+        return (float) Math.toDegrees(Math.asin(this.lookVec.y / this.lookVec.length()));
+    }
+
+    /**
+     * Returns the yaw of the object in degrees.
+     * @return Object yaw in degrees.
+     */
+    public float getYaw() {
+        return (float) Math.toDegrees(Math.atan2(-this.lookVec.x, this.lookVec.z));
     }
 
     /**
@@ -43,6 +70,7 @@ public class VRData implements IVRData {
     public static void encode(VRData data, PacketBuffer buffer) {
         buffer.writeDouble(data.position.x).writeDouble(data.position.y).writeDouble(data.position.z);
         buffer.writeDouble(data.lookVec.x).writeDouble(data.lookVec.y).writeDouble(data.lookVec.z);
+        buffer.writeFloat(data.roll);
     }
 
     /**
@@ -53,7 +81,8 @@ public class VRData implements IVRData {
     public static VRData decode(PacketBuffer buffer) {
         Vector3d position = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         Vector3d lookVec = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
-        return new VRData(position, lookVec);
+        float roll = buffer.readFloat();
+        return new VRData(position, lookVec, roll);
     }
 
 }

@@ -3,7 +3,7 @@ package net.blf02.vrapi.common;
 public class Constants {
 
     // Version {major, minor, patch}
-    public static final int[] version = new int[]{1, 2, 0};
+    public static final int[] version = new int[]{1, 3, 0};
 
     // Debugging
     public static final boolean doDebugging = false;
