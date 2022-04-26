@@ -2,7 +2,10 @@ package net.blf02.vrapi.data;
 
 import net.blf02.vrapi.api.data.IVRData;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * VRData Class.
@@ -14,11 +17,13 @@ public class VRData implements IVRData {
     protected final Vector3d position;
     protected final Vector3d lookVec;
     protected final float roll;
+    protected final Matrix4f rotMatr;
 
-    public VRData(Vector3d position, Vector3d lookVec, float roll) {
+    public VRData(Vector3d position, Vector3d lookVec, float roll, Matrix4f rotMatr) {
         this.position = position;
         this.lookVec = lookVec;
         this.roll = roll;
+        this.rotMatr = rotMatr;
     }
 
     /**
@@ -55,6 +60,20 @@ public class VRData implements IVRData {
     }
 
     /**
+     * Gets the rotation matrix of the object.
+     * Only on the client!
+     * @return The Matrix4f representing the rotation of the object
+     */
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public Matrix4f getRotationMatrix() {
+        if (this.rotMatr == null) {
+            throw new IllegalArgumentException("You can only access the rotation matrix from the client side!");
+        }
+        return this.rotMatr;
+    }
+
+    /**
      * Get the direction of the object
      * @return A vector representing where the object is pointing on the x, y, and z axis.
      */
@@ -82,7 +101,7 @@ public class VRData implements IVRData {
         Vector3d position = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         Vector3d lookVec = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
         float roll = buffer.readFloat();
-        return new VRData(position, lookVec, roll);
+        return new VRData(position, lookVec, roll, null);
     }
 
 }

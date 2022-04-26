@@ -3,7 +3,7 @@ package net.blf02.vrapi.common;
 public class Constants {
 
     // Version {major, minor, patch}
-    public static final int[] version = new int[]{1, 3, 0};
+    public static final int[] version = new int[]{1, 4, 0};
 
     // Debugging
     public static final boolean doDebugging = false;
@@ -12,12 +12,14 @@ public class Constants {
     public static final String VIVECRAFT_PACKAGE = "org.vivecraft";
     public static final String VIVECRAFT_GAMEPLAY_PACKAGE = VIVECRAFT_PACKAGE + ".gameplay";
     public static final String VIVECRAFT_PROVIDER_PACKAGE = VIVECRAFT_PACKAGE + ".provider";
+    public static final String VIVECRAFT_MATH_PACKAGE = VIVECRAFT_PACKAGE + ".utils.math";
 
     // Reflected class references
     public static Class<?> VRPlayerRaw = null;
     public static Class<?> VRDataRaw = null;
     public static Class<?> VRDevicePoseRaw = null;
     public static Class<?> MCVR = null; // Note that this class is abstract
+    public static Class<?> Matrix4f = null;
 
     public static Class<?> ControllerType = null; // Enum
     public static Object[] ControllerType_ENUMS = null;
@@ -33,6 +35,7 @@ public class Constants {
             MCVR = Class.forName(VIVECRAFT_PROVIDER_PACKAGE + ".MCVR");
             ControllerType = Class.forName(VIVECRAFT_PROVIDER_PACKAGE + ".ControllerType");
             ControllerType_ENUMS = ControllerType.getEnumConstants();
+            Matrix4f = Class.forName(VIVECRAFT_MATH_PACKAGE + ".Matrix4f");
             hasVivecraft = true;
         } catch (ClassNotFoundException ignored) {}
     }

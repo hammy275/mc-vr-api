@@ -1,6 +1,9 @@
 package net.blf02.vrapi.api.data;
 
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * IVRData Interface.
@@ -38,4 +41,12 @@ public interface IVRData {
      * @return Object yaw in degrees.
      */
     public float getYaw();
+
+    /**
+     * Gets the rotation matrix of the object.
+     * Only on the client!
+     * @return The Matrix4f representing the rotation of the object
+     */
+    @OnlyIn(Dist.CLIENT)
+    public Matrix4f getRotationMatrix();
 }

@@ -5,12 +5,14 @@ import net.blf02.vrapi.common.Constants;
 import net.blf02.vrapi.data.VRData;
 import net.blf02.vrapi.data.VRPlayer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.FloatBuffer;
 
 public class VRDataGrabber {
 
@@ -33,6 +35,10 @@ public class VRDataGrabber {
     protected static Method VRDevicePose_getPosition; // Returns Vector3d (vanilla type)
     protected static Method VRDevicePose_getDirection; // Returns Vector3d (vanilla type)
     protected static Method VRDevicePose_getRoll; // Returns float
+    protected static Method VRDevicePose_getMatrix; // Returns Matrix4f (Vivecraft type)
+
+    // Matrix4f from Vivecraft
+    protected static Method Matrix4f_toFloatBuffer; // Returns FloatBuffer (Java type)
 
     // MCVR from Vivecraft
     public static Method MCVR_triggerHapticPulse; // Returns void
@@ -54,6 +60,9 @@ public class VRDataGrabber {
                 VRDevicePose_getPosition = getMethod(Constants.VRDevicePoseRaw, "getPosition");
                 VRDevicePose_getDirection = getMethod(Constants.VRDevicePoseRaw, "getDirection");
                 VRDevicePose_getRoll = getMethod(Constants.VRDevicePoseRaw, "getRoll");
+                VRDevicePose_getMatrix = getMethod(Constants.VRDevicePoseRaw, "getMatrix");
+
+                Matrix4f_toFloatBuffer = getMethod(Constants.Matrix4f, "toFloatBuffer");
 
                 Minecraft_vr = getField(Minecraft.class, "vr");
                 Minecraft_vr_Instance = Minecraft_vr.get(Minecraft.getInstance());
@@ -85,31 +94,45 @@ public class VRDataGrabber {
             Vector3d hmdPosition = (Vector3d) VRDevicePose_getPosition.invoke(hmdDevicePoseRaw); // Gets the position for the HMD in the world.
             Vector3d hmdLookVec = (Vector3d) VRDevicePose_getDirection.invoke(hmdDevicePoseRaw);
             float hmdRoll = (float) VRDevicePose_getRoll.invoke(hmdDevicePoseRaw);
+            Matrix4f hmdRotMatr = fromVivecraftMatrix4f(VRDevicePose_getMatrix.invoke(hmdDevicePoseRaw));
 
             Vector3d c0Position = (Vector3d) VRDevicePose_getPosition.invoke(c0DevicePoseRaw);
             Vector3d c0LookVec = (Vector3d) VRDevicePose_getDirection.invoke(c0DevicePoseRaw);
             float c0roll = (float) VRDevicePose_getRoll.invoke(c0DevicePoseRaw);
+            Matrix4f c0RotMatr = fromVivecraftMatrix4f(VRDevicePose_getMatrix.invoke(c0DevicePoseRaw));
 
             Vector3d c1Position = (Vector3d) VRDevicePose_getPosition.invoke(c1DevicePoseRaw);
             Vector3d c1LookVec = (Vector3d) VRDevicePose_getDirection.invoke(c1DevicePoseRaw);
             float c1roll = (float) VRDevicePose_getRoll.invoke(c1DevicePoseRaw);
+            Matrix4f c1RotMatr = fromVivecraftMatrix4f(VRDevicePose_getMatrix.invoke(c1DevicePoseRaw));
 
             Vector3d eye0Position = (Vector3d) VRDevicePose_getPosition.invoke(eye0DevicePoseRaw);
             Vector3d eye0LookVec = (Vector3d) VRDevicePose_getDirection.invoke(eye0DevicePoseRaw);
             float eye0roll = (float) VRDevicePose_getRoll.invoke(eye0DevicePoseRaw);
+            Matrix4f eye0RotMatr = fromVivecraftMatrix4f(VRDevicePose_getMatrix.invoke(eye0DevicePoseRaw));
 
             Vector3d eye1Position = (Vector3d) VRDevicePose_getPosition.invoke(eye1DevicePoseRaw);
             Vector3d eye1LookVec = (Vector3d) VRDevicePose_getDirection.invoke(eye1DevicePoseRaw);
             float eye1roll = (float) VRDevicePose_getRoll.invoke(eye1DevicePoseRaw);
+            Matrix4f eye1RotMatr = fromVivecraftMatrix4f(VRDevicePose_getMatrix.invoke(eye1DevicePoseRaw));
 
-            return new VRPlayer(new VRData(hmdPosition, hmdLookVec, hmdRoll),
-                    new VRData(c0Position, c0LookVec, c0roll), new VRData(c1Position, c1LookVec, c1roll),
-                    new VRData(eye0Position, eye0LookVec, eye0roll), new VRData(eye1Position, eye1LookVec, eye1roll));
+            return new VRPlayer(new VRData(hmdPosition, hmdLookVec, hmdRoll, hmdRotMatr),
+                    new VRData(c0Position, c0LookVec, c0roll, c0RotMatr), new VRData(c1Position, c1LookVec, c1roll, c1RotMatr),
+                    new VRData(eye0Position, eye0LookVec, eye0roll, eye0RotMatr), new VRData(eye1Position, eye1LookVec, eye1roll, eye1RotMatr));
         }  catch (InvocationTargetException | IllegalAccessException e) {
             // We shouldn't error here, as we know these fields and methods exist due to getField() and getMethod()
             // combined with having access to Vivecraft's codebase on GitHub
             throw new RuntimeException("Could not obtain data from Vivecraft! Something has gone horribly wrong.");
         }
+    }
+
+    public static Matrix4f fromVivecraftMatrix4f(Object matrixIn) throws InvocationTargetException, IllegalAccessException {
+        FloatBuffer buffer = (FloatBuffer) Matrix4f_toFloatBuffer.invoke(matrixIn);
+        float[] items = new float[16];
+        for (int i = 0; i <= 15; i++) {
+            items[i] = buffer.get();
+        }
+        return new Matrix4f(items);
     }
 
     public static boolean inVR() {

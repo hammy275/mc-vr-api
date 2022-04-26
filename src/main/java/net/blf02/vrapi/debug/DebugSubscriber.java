@@ -11,8 +11,9 @@ public class DebugSubscriber {
     @SubscribeEvent
     public void onPlayerTick(VRPlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (!event.player.level.isClientSide) return;
         if (event.player.tickCount % 20 == 0) {
-            System.out.println(event.vrPlayer.getController0().getRoll());
+            System.out.println(event.vrPlayer.getController0().getRotationMatrix());
         }
     }
 }
