@@ -1,7 +1,7 @@
 package net.blf02.vrapi.data;
 
 import net.blf02.vrapi.api.data.IVRPlayer;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * VRPlayer contains all the information related to a player in VR.
@@ -98,7 +98,7 @@ public class VRPlayer implements IVRPlayer {
      * @param player VRPlayer to encode
      * @param buffer Buffer to encode into
      */
-    public static void encode(VRPlayer player, PacketBuffer buffer) {
+    public static void encode(VRPlayer player, FriendlyByteBuf buffer) {
         VRData.encode(player.getHMD(), buffer);
         VRData.encode(player.getController0(), buffer);
         VRData.encode(player.getController1(), buffer);
@@ -111,7 +111,7 @@ public class VRPlayer implements IVRPlayer {
      * @param buffer Buffer to decode from
      * @return VRPlayer from the buffer
      */
-    public static VRPlayer decode(PacketBuffer buffer) {
+    public static VRPlayer decode(FriendlyByteBuf buffer) {
         VRData hmd = VRData.decode(buffer);
         VRData c0 = VRData.decode(buffer);
         VRData c1 = VRData.decode(buffer);

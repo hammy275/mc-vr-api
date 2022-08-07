@@ -1,7 +1,7 @@
 package net.blf02.vrapi.api.data;
 
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3d;
+import com.mojang.math.Matrix4f;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -16,13 +16,13 @@ public interface IVRData {
      * Get the direction of the object
      * @return A vector representing where the object is pointing on the x, y, and z axis.
      */
-    public Vector3d getLookAngle();
+    public Vec3 getLookAngle();
 
     /**
      * Get the position of the object in Minecraft
-     * @return A Vector3d representing the object's location in Minecraft
+     * @return A Vec3 representing the object's location in Minecraft
      */
-    public Vector3d position();
+    public Vec3 position();
 
     /**
      * Returns the roll of the object in degrees.

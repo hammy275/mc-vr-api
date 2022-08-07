@@ -3,11 +3,11 @@ package net.blf02.vrapi.common.network.packets;
 import net.blf02.vrapi.client.ServerHasAPI;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.server.Tracker;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -23,20 +23,20 @@ public class VersionSyncPacket {
         this.protocolVersion = "GoodToGo!";
     }
 
-    public static void encode(VersionSyncPacket packet, PacketBuffer buffer) {
+    public static void encode(VersionSyncPacket packet, FriendlyByteBuf buffer) {
         buffer.writeUtf(packet.protocolVersion);
     }
 
-    public static VersionSyncPacket decode(PacketBuffer buffer) {
+    public static VersionSyncPacket decode(FriendlyByteBuf buffer) {
         return new VersionSyncPacket(buffer.readUtf());
     }
 
     public static void handle(VersionSyncPacket message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity sender = ctx.get().getSender();
+            ServerPlayer sender = ctx.get().getSender();
             if (sender != null) {
                 if (!message.protocolVersion.equals(Network.PROTOCOL_VERSION)) {
-                    sender.connection.connection.disconnect(new StringTextComponent(
+                    sender.connection.connection.disconnect(new TextComponent(
                             "Version mismatch! The server is on " + Network.PROTOCOL_VERSION + " but you're on " + message.protocolVersion + "!"));
                 } else {
                     Tracker.playersInVR.add(sender.getGameProfile().getName());

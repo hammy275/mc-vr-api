@@ -12,20 +12,19 @@ import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
 import net.blf02.vrapi.debug.DebugSubscriber;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.network.NetworkConstants;
+
+import java.util.logging.Logger;
 
 @Mod(VRAPIMod.MOD_ID)
 public class VRAPIMod {
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = Logger.getLogger(VRAPIMod.MOD_ID);
 
     public static final String MOD_ID = "vrapi";
 
@@ -46,8 +45,8 @@ public class VRAPIMod {
         }
 
         // Don't show red X if the server doesn't have the API but we do.
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST,
-                () -> new ImmutablePair<>(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class,
+                () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 
     }
 

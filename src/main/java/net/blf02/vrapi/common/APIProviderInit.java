@@ -31,8 +31,8 @@ public class APIProviderInit {
 
     protected static Stream<Type> findValidAnnotations(final ModFileScanData data) {
         final Type annotationType = Type.getType(VRAPIPlugin.class);
-        return data.getAnnotations().stream().filter(it -> annotationType.equals(it.getAnnotationType()))
-                .map(ModFileScanData.AnnotationData::getClassType);
+        return data.getAnnotations().stream().filter(it -> annotationType.equals(it.annotationType()))
+                .map(ModFileScanData.AnnotationData::clazz);
     }
 
     protected static VRAPIPluginProvider initPlugin(final Type type) {

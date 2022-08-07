@@ -1,9 +1,9 @@
 package net.blf02.vrapi.common.network.packets;
 
 import net.blf02.vrapi.common.VRAPI;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -23,20 +23,20 @@ public class VRRumblePacket {
         this.delay = delaySeconds;
     }
 
-    public static void encode(VRRumblePacket packet, PacketBuffer buffer) {
+    public static void encode(VRRumblePacket packet, FriendlyByteBuf buffer) {
         buffer.writeInt(packet.controllerNum).writeFloat(packet.duration)
                 .writeFloat(packet.frequency).writeFloat(packet.amplitude)
                 .writeFloat(packet.delay);
     }
 
-    public static VRRumblePacket decode(PacketBuffer buffer) {
+    public static VRRumblePacket decode(FriendlyByteBuf buffer) {
         return new VRRumblePacket(buffer.readInt(), buffer.readFloat(),
                 buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
     }
 
     public static void handle(VRRumblePacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ServerPlayerEntity sender = ctx.get().getSender();
+            ServerPlayer sender = ctx.get().getSender();
             if (sender == null) {  // From server to client
                 VRAPI.VRAPIInstance.triggerHapticPulse(msg.controllerNum, msg.duration, msg.frequency,
                         msg.amplitude, msg.delay, null);

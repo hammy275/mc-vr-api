@@ -2,7 +2,7 @@ package net.blf02.vrapi.event;
 
 import net.blf02.vrapi.api.data.IVRPlayer;
 import net.blf02.vrapi.common.VRAPI;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.LogicalSide;
@@ -12,7 +12,7 @@ public class VRPlayerTickEvent extends Event {
     /**
      * Contains the player this event is fired for
      */
-    public final PlayerEntity player;
+    public final Player player;
 
     /**
      * Contains the phase from TickEvent.PlayerTickEvent this is fired on.
@@ -29,7 +29,7 @@ public class VRPlayerTickEvent extends Event {
      */
     public final IVRPlayer vrPlayer;
 
-    public VRPlayerTickEvent(PlayerEntity player, TickEvent.Phase phase, LogicalSide side) {
+    public VRPlayerTickEvent(Player player, TickEvent.Phase phase, LogicalSide side) {
         this.player = player;
         this.phase = phase;
         this.side = side;

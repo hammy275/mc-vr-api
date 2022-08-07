@@ -7,11 +7,11 @@ import net.blf02.vrapi.client.VRDataGrabber;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRRumblePacket;
 import net.blf02.vrapi.server.Tracker;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -46,7 +46,7 @@ public class VRAPI implements IVRAPI {
      * @return true if both the server and the client have the API installed. false otherwise.
      */
     @Override
-    public boolean apiActive(PlayerEntity player) {
+    public boolean apiActive(Player player) {
         if (player.level.isClientSide) {
             return ServerHasAPI.serverHasAPI;
         } else {
@@ -63,7 +63,7 @@ public class VRAPI implements IVRAPI {
      * @return A VRPlayer instance representing the player, or null based on the reasoning above.
      */
     @Nullable
-    public IVRPlayer getVRPlayer(PlayerEntity player) {
+    public IVRPlayer getVRPlayer(Player player) {
         if (player.level.isClientSide) {
             return VRDataGrabber.getVRPlayer();
         } else {
@@ -77,7 +77,7 @@ public class VRAPI implements IVRAPI {
      * @return true if the Player is in VR. False otherwise.
      */
     @Override
-    public boolean playerInVR(PlayerEntity player) {
+    public boolean playerInVR(Player player) {
         if (player.level.isClientSide) {
             return VRDataGrabber.inVR();
         } else {
@@ -95,7 +95,7 @@ public class VRAPI implements IVRAPI {
      * @param player The player to rumble for. If null, this function does nothing server-side. If non-null, a packet
      *               is sent to the specified player to rumble server side.
      */
-    public void triggerHapticPulse(int controllerNum, float durationSeconds, @Nullable ServerPlayerEntity player) {
+    public void triggerHapticPulse(int controllerNum, float durationSeconds, @Nullable ServerPlayer player) {
         // Constants come from the original Vivecraft code
         triggerHapticPulse(controllerNum, durationSeconds, 160, 1, 0, player);
     }
@@ -114,7 +114,7 @@ public class VRAPI implements IVRAPI {
      *               is sent to the specified player to rumble server side.
      */
     public void triggerHapticPulse(int controllerNum, float durationSeconds, float frequency, float amplitude, float delaySeconds,
-                                   @Nullable ServerPlayerEntity player) {
+                                   @Nullable ServerPlayer player) {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             try {
                 VRDataGrabber.MCVR_triggerHapticPulse.invoke(VRDataGrabber.Minecraft_vr_Instance,

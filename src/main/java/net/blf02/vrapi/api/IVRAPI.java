@@ -1,8 +1,8 @@
 package net.blf02.vrapi.api;
 
 import net.blf02.vrapi.api.data.IVRPlayer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +27,7 @@ public interface IVRAPI {
      * @param player The player to check.
      * @return true if both the server and the client have the API installed. false otherwise.
      */
-    public boolean apiActive(PlayerEntity player);
+    public boolean apiActive(Player player);
 
     /**
      * Gets the VRPlayer that represents all VR information about a player.
@@ -37,14 +37,14 @@ public interface IVRAPI {
      * @param player Player to get information
      * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
      */
-    public IVRPlayer getVRPlayer(PlayerEntity player);
+    public IVRPlayer getVRPlayer(Player player);
 
     /**
      * Checks whether a player is in VR. Is built to be much faster than `getVRPlayer(player) != null`
      * @param player Player to check if in VR
      * @return true if the Player is in VR. False otherwise.
      */
-    public boolean playerInVR(PlayerEntity player);
+    public boolean playerInVR(Player player);
 
     /**
      * Triggers a haptic pulse/rumble for the controller. Much easier to understand version.
@@ -56,7 +56,7 @@ public interface IVRAPI {
      * @param player The player to rumble for. If null, this function does nothing server-side. If non-null, a packet
      *               is sent to the specified player to rumble server side.
      */
-    public void triggerHapticPulse(int controllerNum, float durationSeconds, @Nullable ServerPlayerEntity player);
+    public void triggerHapticPulse(int controllerNum, float durationSeconds, @Nullable ServerPlayer player);
 
     /**
      * Triggers a haptic pulse/rumble for the controller.
@@ -72,5 +72,5 @@ public interface IVRAPI {
      *               is sent to the specified player to rumble server side.
      */
     public void triggerHapticPulse(int controllerNum, float durationSeconds, float frequency, float amplitude, float delaySeconds,
-                                   @Nullable ServerPlayerEntity player);
+                                   @Nullable ServerPlayer player);
 }
