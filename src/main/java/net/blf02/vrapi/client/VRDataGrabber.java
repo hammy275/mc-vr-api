@@ -70,7 +70,8 @@ public class VRDataGrabber {
                 MCVR_triggerHapticPulse = getMethod(Constants.MCVR, "triggerHapticPulse",
                         Constants.ControllerType, float.class, float.class, float.class, float.class);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Fatal error! Could not get an important object! Please report this!");
+                VRAPIMod.LOGGER.log(Level.SEVERE, "Error: " + e.getMessage());
+                throw new RuntimeException("Fatal error! Could not get! Please report this, along with the error message above!");
             }
 
         }
