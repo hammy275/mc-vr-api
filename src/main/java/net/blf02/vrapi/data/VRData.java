@@ -104,4 +104,10 @@ public class VRData implements IVRData {
         return new VRData(position, lookVec, roll, null);
     }
 
+    @Override
+    public String toString() {
+        return "Position: " + this.position +
+                "\nLook Vector: " + this.lookVec +
+                "\nPitch/Yaw/Roll: " + "%f/%f/%f".formatted(this.getPitch(), this.getYaw(), this.getRoll());
+    }
 }
