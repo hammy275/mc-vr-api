@@ -1,4 +1,4 @@
-# VR API
+# MC VR API
 
 ## What?
 
@@ -7,6 +7,8 @@ This mod serves to act as an API for Vivecraft, to allow mod developers to inter
 ## How?
 
 ### Setup
+
+#### Forge Setup:
 
 Add the following to your `build.gradle`:
 
@@ -55,6 +57,10 @@ With this all done, you should be good to go! You can reference `VRPlugin.vrAPI`
 
 Take a look at the Documentation section below to figure out what you can do.
 
+#### Fabric/Quilt:
+
+TODO
+
 ### Documentation
 
 A good starting point is the wiki for `mc-vr-api`, which can be found [here!](https://github.com/hammy3502/mc-vr-api/wiki)
@@ -79,25 +85,21 @@ If you want an example of this, I've created a small "demo" mod that shows off t
 
 #### Q: What support is there for 1.17 and 1.18?
 
-A: The developers of Vivecraft plan to create an official API, which to my knowledge, is currently slated for 1.18.2. However, I'm soon going to be porting [ImmersiveMC](https://github.com/hammy3502/immersive-mc) to 1.18.2. As a result, I may port this API to 1.18.2 before the official API comes out so ImmersiveMC may utilize it.
-
-1.17.x and versions of 1.18 other than 1.18.2 will not be supported due to Vivecraft not supporting them with Forge, and any versions of Minecraft that are not supported by Vivecraft with Forge will not be supported by this mod.
+A: 1.18.2 is supported! Due to Vivecraft never supporting 1.17.x under mod loaders, neither will this.
 
 #### Q: Which Minecraft versions will this mod release for?
 
-A: This mod will release for every Minecraft version up to and including the first version with the official Vivecraft API. All versions that are supported at the time will receive a "2.0" update that reflects the Vivecraft API. 
+A: This mod will release for every Minecraft version up to and including the first version with the official Vivecraft API. All versions that are supported at the time will receive a "3.0" update that reflects the Vivecraft API. 
 
 If the API never releases for some reason, I hope to continue to release this mod under newer versions as long as possible.
 
 #### Q: Which Minecraft versions will continue to receive updates/be supported?
 
-A: I plan to support all Minecraft versions that Forge supports that also has an associated Vivecraft with Forge release.
-
-Additionally, there tend to be older versions of Minecraft that become the "de-facto" modding version. The latest "de-facto" version will also be supported. As of July 2022, this "de-facto" version is 1.16.5. 
+A: I plan to support the latest version of the two most recent major releases of Minecraft that have support for Vivecraft modded.
 
 #### Q: Fabric?
 
-A: No. Vivecraft is based on Forge, so this API is only for Forge. I have no plans to write this (or an equivalent mod) for MCXR, and MCXR plans to have an official API anyways.
+A: Yes! With the release of the Vivecraft port to a more loader-less architecture, Fabric is supported! Quilt is also accounted for, but currently not tested, so use at your own risk!
 
 #### Q: Why aren't there many updates? Why hasn't this updated in a while?
 
@@ -113,5 +115,5 @@ If your mod doesn't always require VR, then your code is attempting to reference
 
 #### Q: When can I start using the `IVRAPI` instance?
 
-A: `IVRAPI` instances are handed out during the `FMLCommonSetupEvent` event.
+A: `IVRAPI` instances are handed out during the `FMLCommonSetupEvent` event in Forge environments and during mod initialization in Fabric/Quilt environments.
 
