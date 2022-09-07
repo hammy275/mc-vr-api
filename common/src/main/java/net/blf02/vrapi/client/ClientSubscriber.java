@@ -9,8 +9,14 @@ import net.minecraft.world.entity.player.Player;
 
 public class ClientSubscriber {
 
+    public static boolean didJoinPacket = false;
+
     public static void onPlayerTick(Player player) {
         if (player.level.isClientSide) {
+            if (!didJoinPacket) {
+                onLogin(player);
+                didJoinPacket = true;
+            }
             VRPlayer vrPlayer = VRDataGrabber.getVRPlayer();
             if (vrPlayer != null) {
                 Network.CHANNEL.sendToServer(new VRDataPacket(vrPlayer));
@@ -26,7 +32,8 @@ public class ClientSubscriber {
         }
     }
 
-    public static void onLogin(Player player) {
+    private static void onLogin(Player player) {
+        didJoinPacket = false;
         ServerHasAPI.serverHasAPI = false;
         ServerHasAPI.countForAPIResponse = true;
         ServerHasAPI.apiResponseCountdown = 100;

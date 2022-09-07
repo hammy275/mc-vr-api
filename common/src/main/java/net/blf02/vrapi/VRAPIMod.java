@@ -26,7 +26,6 @@ public class VRAPIMod {
         // Client only
         if (Platform.getEnvironment() == Env.CLIENT) {
             TickEvent.PLAYER_POST.register(ClientSubscriber::onPlayerTick);
-            PlayerEvent.PLAYER_JOIN.register(ClientSubscriber::onLogin);
         }
 
         // Common

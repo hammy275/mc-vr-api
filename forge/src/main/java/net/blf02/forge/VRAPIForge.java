@@ -19,6 +19,7 @@ public class VRAPIForge {
         // Don't show red X if the server doesn't have the API but we do.
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class,
                 () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+        VRAPIMod.init();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
