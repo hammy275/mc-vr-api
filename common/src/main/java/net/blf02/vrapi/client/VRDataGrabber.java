@@ -63,12 +63,24 @@ public class VRDataGrabber {
 
                 Matrix4f_toFloatBuffer = getMethod(ReflectionConstants.Matrix4f, "toFloatBuffer");
 
-                Minecraft_vr = getField(Minecraft.class, "vr");
-                Minecraft_vr_Instance = Minecraft_vr.get(Minecraft.getInstance());
+                Object vrHolder;
+
+                try {
+                    Minecraft_vr = getField(Minecraft.class, "vr");
+                    vrHolder = Minecraft.getInstance();
+                } catch (RuntimeException e) {
+                    Class<?> ClientDataHolder = Class.forName(ReflectionConstants.VIVECRAFT_PACKAGE + ".ClientDataHolder");
+                    Method getCDHInstance = getMethod(ClientDataHolder, "getInstance");
+                    Object cdhInstance = getCDHInstance.invoke(null);
+                    Minecraft_vr = getField(ClientDataHolder, "vr");
+                    vrHolder = cdhInstance;
+                }
+
+                Minecraft_vr_Instance = Minecraft_vr.get(vrHolder);
 
                 MCVR_triggerHapticPulse = getMethod(ReflectionConstants.MCVR, "triggerHapticPulse",
                         ReflectionConstants.ControllerType, float.class, float.class, float.class, float.class);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
                 VRAPIMod.LOGGER.log(Level.SEVERE, "Error: " + e.getMessage());
                 throw new RuntimeException("Fatal error! Could not get! Please report this, along with the error message above!");
             }
