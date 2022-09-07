@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "vrapi",
+  "version": "${version}",
+  "name": "mc-vr-api",
+  "description": "VR API mod that allows mods to integrate into Vivecraft.",
+  "authors": [
+    "hammy3502"
+  ],
+  "contact": {
+    "homepage": "https://github.com/hammy3502/mc-vr-api",
+    "sources": "https://github.com/hammy3502/mc-vr-api"
+  },
+  "license": "GNU GPLv3",
+  "icon": "assets/examplemod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.blf02.fabric.VRAPIFabric"
+    ],
+    "vrapi": [
+      "net.blf02.vrapi.common.VRAPI"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.2",
+    "architectury": ">=4.9.83"
+  }
+}
