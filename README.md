@@ -140,5 +140,5 @@ If your mod doesn't always require VR, then your code is attempting to reference
 
 #### Q: When can I start using the `IVRAPI` instance?
 
-A: `IVRAPI` instances are handed out during the `FMLCommonSetupEvent` event in Forge environments and during mod initialization in Fabric/Quilt environments.
+A: `IVRAPI` instances are handed out during the `FMLCommonSetupEvent` event in Forge environments and can be retrieved through `EntrypointContainer`s in Fabric/Quilt.
 
