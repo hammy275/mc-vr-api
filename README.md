@@ -59,7 +59,32 @@ Take a look at the Documentation section below to figure out what you can do.
 
 #### Fabric/Quilt:
 
-TODO
+Add the following to your `build.gradle`:
+
+```
+repositories {
+    maven {
+        name = "blf02"
+        url = "https://blf02.net:4567"
+    }
+}
+```
+
+Then add the following to the `dependencies` section of your `build.gradle`:
+
+```
+modApi "net.blf02:vrapi:VERSION-fabric"
+```
+where `VERSION` is some version you want (such as `2.0.0-pre1`). Subsitute `fabric` for `quilt` if you want the Quilt version of `mc-vr-api`.
+
+From there, add the following:
+```java
+List<EntrypointContainer<IVRAPI>> apis = FabricLoader.getInstance().getEntrypointContainers("vrapi", IVRAPI.class);
+if (apis.size() > 0) {
+    IVRAPI apiInstance = apis.get(0).getEntrypoint();
+}
+```
+Store the `apiInstance` somewhere that your mod can access it, and you'll be good to go!
 
 ### Documentation
 
