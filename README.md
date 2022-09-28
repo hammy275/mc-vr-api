@@ -77,14 +77,32 @@ modApi "net.blf02:vrapi:VERSION-fabric"
 ```
 where `VERSION` is some version you want (such as `2.0.0-pre1`). Subsitute `fabric` for `quilt` if you want the Quilt version of `mc-vr-api`.
 
-From there, add the following:
+From there, add the following in a class separate from everything else (something like `VRPlugin`:
 ```java
-List<EntrypointContainer<IVRAPI>> apis = FabricLoader.getInstance().getEntrypointContainers("vrapi", IVRAPI.class);
-if (apis.size() > 0) {
-    IVRAPI apiInstance = apis.get(0).getEntrypoint();
+public static void initVR() {
+    List<EntrypointContainer<IVRAPI>> apis = FabricLoader.getInstance().getEntrypointContainers("vrapi", IVRAPI.class);
+    if (apis.size() > 0) {
+        IVRAPI apiInstance = apis.get(0).getEntrypoint();
+        MyModInitializer.hasVRPlugin = true;
+    } 
+}
+
+```
+Store the `apiInstance` inside the `VRPlugin` class.
+
+From there, add the following to your main mod class (or somewhere else, as long as your initializing function calls it)
+
+```java
+
+public static boolean hasVRPlugin = false;
+
+try {
+    Class.forName("net.blf02.vrapi.api.IVRAPI");
+    VRPlugin.initVR();
+} catch (ClassNotFoundException e) {
+    // mc-vr-api wasn't available, so it did not load!
 }
 ```
-Store the `apiInstance` somewhere that your mod can access it, and you'll be good to go!
 
 ### Documentation
 
