@@ -89,12 +89,12 @@ public class VRDataGrabber {
     }
 
     public static VRPlayer getVRPlayer() {
-        if (!ReflectionConstants.clientHasVivecraft()) {
+        if (!inVR()) {
             return null;
         }
 
         try {
-            Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Get our "VRPlayer" from Vivecraft
+            Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Get our "VRPlayer" from Vivecraft}
             Object vrDataRaw = VRPlayer_vrdata_world_post.get(vrPlayerRaw); // Get the "VRData" from Vivecraft
 
             Object hmdDevicePoseRaw = VRData_hmd.get(vrDataRaw); // Get the VRDevicePose for the HMD
@@ -151,7 +151,9 @@ public class VRDataGrabber {
         }
         try {
             Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Try to get vrPlayer from Vivecraft
-            return true; // If we got the above, we're definitely in VR.
+            // Since this function may exist in Vivecraft Mixin, we need to check if it's nonnull to see if we're
+            // in VR or not.
+            return vrPlayerRaw != null;
         } catch (InvocationTargetException | IllegalAccessException e) {
             return false; // If we failed to grab the above, we definitely are NOT in VR.
         }
