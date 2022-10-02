@@ -34,9 +34,9 @@ public class VRAPIMod {
             TickEvent.PLAYER_POST.register(DebugSubscriber::onPlayerTick);
         }
 
-        ReflectionConstants.init();
         // Only bother to grab VR Data when on the client-side
         if (Platform.getEnvironment() == Env.CLIENT) {
+            ReflectionConstants.init();
             VRDataGrabber.init();
         }
 
