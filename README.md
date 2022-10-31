@@ -15,8 +15,7 @@ Add the following to your `build.gradle`:
 ```
 repositories {
     maven {
-        name = "blf02"
-        url = "https://blf02.net:4567"
+        url = "https://cursemaven.com"
     }
 }
 ```
@@ -24,10 +23,11 @@ repositories {
 Add the following to the dependencies section of your `build.gradle`:
 
 ```
-compileOnly fg.deobf("net.blf02:vrapi:VERSION")
-runtimeOnly fg.deobf("net.blf02:vrapi:VERSION")
+compileOnly fg.deobf("curse.maven:mcvrapi-591092:FILE_ID")
+runtimeOnly fg.deobf("curse.maven:mcvrapi-591092:FILE_ID")
 ```
-Where `VERSION` is the version you want to use (such as `1.1.0`). You can view a list of all available versions [here](https://github.com/hammy3502/mc-vr-api/wiki/Versions).
+
+Where `FILE_ID` is the file ID from CurseForge of the version of `mc-vr-api` you want. Find the file of the version you want of `mc-vr-api`, visit its URL, then copy the numbers at the end. That's the file ID. For more information, see the [CurseMaven Website](https://www.cursemaven.com/). 
 
 After adding these to your `build.gradle`, exit and re-open your IDE. You may need to run `gradlew --refresh-dependencies` afterwards (or `./gradlew --refresh-dependencies` if you're on Linux).
 
@@ -64,8 +64,7 @@ Add the following to your `build.gradle`:
 ```
 repositories {
     maven {
-        name = "blf02"
-        url = "https://blf02.net:4567"
+        url = "https://cursemaven.com"
     }
 }
 ```
@@ -73,9 +72,9 @@ repositories {
 Then add the following to the `dependencies` section of your `build.gradle`:
 
 ```
-modApi "net.blf02:vrapi:VERSION-fabric"
+modApi "curse.maven:mcvrapi-591092:FILE_ID"
 ```
-where `VERSION` is some version you want (such as `2.0.0-pre1`). Subsitute `fabric` for `quilt` if you want the Quilt version of `mc-vr-api`.
+Where `FILE_ID` is the file ID from CurseForge of the version of `mc-vr-api` you want. Find the file of the version you want of `mc-vr-api`, visit its URL, then copy the numbers at the end. That's the file ID. For more information, see the [CurseMaven Website](https://www.cursemaven.com/).
 
 From there, add the following in a class separate from everything else (something like `VRPlugin`:
 ```java
