@@ -5,7 +5,7 @@ import net.blf02.vrapi.client.ServerHasAPI;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.server.Tracker;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
@@ -36,8 +36,8 @@ public class VersionSyncPacket {
             Player senderP = ctx.get().getPlayer();
             if (senderP instanceof ServerPlayer sender) {
                 if (!this.protocolVersion.equals(Network.PROTOCOL_VERSION)) {
-                    sender.connection.connection.disconnect(new TextComponent(
-                            "Version mismatch! The server is on " + Network.PROTOCOL_VERSION + " but you're on " + this.protocolVersion + "!"));
+                    sender.connection.connection.disconnect(Component.translatable(
+                            "message.vrapi.version_mismatch", Network.PROTOCOL_VERSION, this.protocolVersion));
                 } else {
                     Tracker.playersInVR.add(sender.getGameProfile().getName());
                     Network.CHANNEL.sendToPlayer(sender, new VersionSyncPacket());

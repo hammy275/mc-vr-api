@@ -1,0 +1,5 @@
+{
+  "message.vrapi.no_api_server": "Server does not have API mod; modded VR features may not work!",
+
+  "message.vrapi.version_mismatch": "Version mismatch! The server is on %d but you're on %d!"
+}

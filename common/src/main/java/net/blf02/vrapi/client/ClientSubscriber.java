@@ -4,7 +4,7 @@ import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
 import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
 import net.blf02.vrapi.data.VRPlayer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class ClientSubscriber {
@@ -24,9 +24,8 @@ public class ClientSubscriber {
             if (ServerHasAPI.countForAPIResponse) {
                 if (--ServerHasAPI.apiResponseCountdown < 1) {
                     ServerHasAPI.countForAPIResponse = false;
-                    player.sendMessage(
-                            new TextComponent("Server does not have API mod; modded VR features may not work!"),
-                            player.getUUID());
+                    player.sendSystemMessage(
+                            Component.translatable("message.vrapi.no_api_server"));
                 }
             }
         }
