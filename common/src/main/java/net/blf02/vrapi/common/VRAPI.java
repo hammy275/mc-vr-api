@@ -55,20 +55,70 @@ public class VRAPI implements IVRAPI {
     }
 
     /**
-     * Gets the VRPlayer that represents all VR information about a player.
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data after the game tick.
      * If this function returns null, the player either isn't in VR, or the server doesn't yet know that they're in
      * VR.
      *
      * @param player Player to get information
-     * @return A VRPlayer instance representing the player, or null based on the reasoning above.
+     * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
      */
     @Nullable
     public IVRPlayer getVRPlayer(Player player) {
         if (player.level.isClientSide) {
-            return VRDataGrabber.getVRPlayer();
+            return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
         } else {
             return Tracker.playerToVR.get(player.getGameProfile().getName());
         }
+    }
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data before the game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
+     */
+    @Override
+    public IVRPlayer getPreTickVRPlayer() {
+        return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_PRE);
+    }
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data from before rendering a frame.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
+     */
+    @Override
+    public IVRPlayer getRenderVRPlayer() {
+        return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_RENDER);
+    }
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player relative to the room, rather than in
+     * Minecraft coordinates. Gets the data from before a game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player respective to the room, or null if they're not in VR.
+     */
+    @Override
+    public IVRPlayer getPreTickRoomVRPlayer() {
+        return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.ROOM_PRE);
+    }
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player relative to the room, rather than in
+     * Minecraft coordinates. Gets the data from after a game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player respective to the room, or null if they're not in VR.
+     */
+    @Override
+    public IVRPlayer getPostTickRoomVRPlayer() {
+        return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.ROOM_POST);
     }
 
     /**
@@ -87,7 +137,6 @@ public class VRAPI implements IVRAPI {
 
     /**
      * Triggers a haptic pulse/rumble for the controller. Much easier to understand version.
-     *
      * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
      *
      * @param controllerNum Controller number to rumble.
@@ -102,7 +151,6 @@ public class VRAPI implements IVRAPI {
 
     /**
      * Triggers a haptic pulse/rumble for the controller.
-     *
      * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
      *
      * @param controllerNum Controller number to rumble

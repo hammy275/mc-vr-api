@@ -22,6 +22,10 @@ public class VRDataGrabber {
     // VRPlayer from Vivecraft
     protected static Method VRPlayer_GET; // Returns VRPlayer
     protected static Field VRPlayer_vrdata_world_post; // Type VRData
+    protected static Field VRPlayer_vrdata_world_pre; // Type VRData
+    protected static Field VRPlayer_vrdata_world_render; // Type VRData
+    protected static Field VRPlayer_vrdata_room_pre; // Type VRData
+    protected static Field VRPlayer_vrdata_room_post; // Type VRData
 
     // VRData from Vivecraft
     protected static Field VRData_hmd; // Type VRDevicePose
@@ -49,6 +53,10 @@ public class VRDataGrabber {
             try {
                 VRPlayer_GET = getMethod(ReflectionConstants.VRPlayerRaw, "get");
                 VRPlayer_vrdata_world_post = getField(ReflectionConstants.VRPlayerRaw, "vrdata_world_post");
+                VRPlayer_vrdata_world_pre = getField(ReflectionConstants.VRPlayerRaw, "vrdata_world_pre");
+                VRPlayer_vrdata_world_render = getField(ReflectionConstants.VRPlayerRaw, "vrdata_world_render");
+                VRPlayer_vrdata_room_pre = getField(ReflectionConstants.VRPlayerRaw, "vrdata_room_pre");
+                VRPlayer_vrdata_room_post = getField(ReflectionConstants.VRPlayerRaw, "vrdata_room_post");
 
                 VRData_hmd = getField(ReflectionConstants.VRDataRaw, "hmd");
                 VRData_c0 = getField(ReflectionConstants.VRDataRaw, "c0");
@@ -88,14 +96,23 @@ public class VRDataGrabber {
         }
     }
 
-    public static VRPlayer getVRPlayer() {
+    public static VRPlayer getVRPlayer(PlayerType type) {
         if (!inVR()) {
             return null;
         }
 
         try {
             Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Get our "VRPlayer" from Vivecraft}
-            Object vrDataRaw = VRPlayer_vrdata_world_post.get(vrPlayerRaw); // Get the "VRData" from Vivecraft
+            Object vrDataRaw;
+            // Get the "VRData" from Vivecraft
+            switch (type) {
+                case WORLD_PRE -> vrDataRaw = VRPlayer_vrdata_world_pre.get(vrPlayerRaw);
+                case WORLD_RENDER -> vrDataRaw = VRPlayer_vrdata_world_render.get(vrPlayerRaw);
+                case ROOM_PRE -> vrDataRaw = VRPlayer_vrdata_room_pre.get(vrPlayerRaw);
+                case ROOM_POST -> vrDataRaw = VRPlayer_vrdata_room_post.get(vrPlayerRaw);
+                default -> vrDataRaw = VRPlayer_vrdata_world_post.get(vrPlayerRaw); // Covers POST and null
+            }
+
 
             Object hmdDevicePoseRaw = VRData_hmd.get(vrDataRaw); // Get the VRDevicePose for the HMD
             Object c0DevicePoseRaw = VRData_c0.get(vrDataRaw);
@@ -173,6 +190,10 @@ public class VRDataGrabber {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException("Could not load method " + method + " from " + clazz);
         }
+    }
+
+    public enum PlayerType {
+        WORLD_POST, WORLD_PRE, WORLD_RENDER, ROOM_PRE, ROOM_POST;
     }
 
 }

@@ -11,17 +11,20 @@ public class DebugSubscriber {
 
     public static void onPlayerTick(Player player) {
         if (!player.level.isClientSide) return;
-        IVRPlayer vrPlayer = VRAPI.VRAPIInstance.getVRPlayer(player);
-        if (vrPlayer != null && player.tickCount % 20 == 0) {
-            for (int i = 0; i <= 1; i++) {
-                IVRData con = vrPlayer.getController(i);
-                Vec3 pos = con.position().add(con.getLookAngle().multiply(5, 5, 5));
-                player.level.addParticle(ParticleTypes.ANGRY_VILLAGER, pos.x, pos.y,
-                        pos.z, 0, 0, 0);
-            }
-            IVRData head = vrPlayer.getHMD();
-            player.level.addParticle(ParticleTypes.ASH, head.position().x, head.position().y,
-                    head.position().z, 0, 0, 0);
+        IVRPlayer vrPlayerPostTick = VRAPI.VRAPIInstance.getVRPlayer(player);
+        if (vrPlayerPostTick != null && player.tickCount % 20 == 0) {
+            IVRPlayer vrPlayerPreTick = VRAPI.VRAPIInstance.getPreTickVRPlayer();
+            IVRData left = vrPlayerPreTick.getController1();
+            Vec3 posLeft = left.position().add(left.getLookAngle().multiply(5, 5, 5));
+            player.level.addParticle(ParticleTypes.ANGRY_VILLAGER, posLeft.x, posLeft.y,
+                    posLeft.z, 0, 0, 0);
+
+            IVRPlayer renderPlayer = VRAPI.VRAPIInstance.getRenderVRPlayer();
+            IVRData right = renderPlayer.getController0();
+            Vec3 posRight = right.position().add(right.getLookAngle().multiply(5, 5, 5));
+            player.level.addParticle(ParticleTypes.ANGRY_VILLAGER, posRight.x, posRight.y,
+                    posRight.z, 0, 0, 0);
+
 
         }
     }
