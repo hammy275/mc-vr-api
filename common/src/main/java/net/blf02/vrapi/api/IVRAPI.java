@@ -30,7 +30,7 @@ public interface IVRAPI {
     public boolean apiActive(Player player);
 
     /**
-     * Gets the VRPlayer that represents all VR information about a player.
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data after the game tick.
      * If this function returns null, the player either isn't in VR, or the server doesn't yet know that they're in
      * VR.
      *
@@ -38,6 +38,44 @@ public interface IVRAPI {
      * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
      */
     public IVRPlayer getVRPlayer(Player player);
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data before the game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
+     */
+    public IVRPlayer getPreTickVRPlayer();
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player. Gets the data from before rendering a frame.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player, or null based on the reasoning above.
+     */
+    public IVRPlayer getRenderVRPlayer();
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player relative to the room, rather than in
+     * Minecraft coordinates. Gets the data from before a game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player respective to the room, or null if they're not in VR.
+     */
+    public IVRPlayer getPreTickRoomVRPlayer();
+
+    /**
+     * Gets the VRPlayer that represents all VR information about a player relative to the room, rather than in
+     * Minecraft coordinates. Gets the data from after a game tick.
+     * If this function returns null, the player isn't in VR.
+     * THIS FUNCTION IS ONLY AVAILABLE CLIENT-SIDE!
+     *
+     * @return An IVRPlayer instance representing the player respective to the room, or null if they're not in VR.
+     */
+    public IVRPlayer getPostTickRoomVRPlayer();
 
     /**
      * Checks whether a player is in VR. Is built to be much faster than `getVRPlayer(player) != null`
@@ -48,7 +86,6 @@ public interface IVRAPI {
 
     /**
      * Triggers a haptic pulse/rumble for the controller. Much easier to understand version.
-     *
      * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
      *
      * @param controllerNum Controller number to rumble.
@@ -60,7 +97,6 @@ public interface IVRAPI {
 
     /**
      * Triggers a haptic pulse/rumble for the controller.
-     *
      * NOTE: ONLY SPECIFY THE `player` PARAMETER IF THIS FUNCTION ISN'T BEING CALLED FROM THE CLIENT-SIDE!!!!
      *
      * @param controllerNum Controller number to rumble

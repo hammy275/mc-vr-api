@@ -17,7 +17,7 @@ public class ClientSubscriber {
                 onLogin(player);
                 didJoinPacket = true;
             }
-            VRPlayer vrPlayer = VRDataGrabber.getVRPlayer();
+            VRPlayer vrPlayer = VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
             if (vrPlayer != null) {
                 Network.CHANNEL.sendToServer(new VRDataPacket(vrPlayer));
             }
