@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "vrapi",
-  "version": "${version}",
+  "version": "2.1.1",
   "name": "mc-vr-api",
   "description": "VR API mod that allows mods to integrate into Vivecraft.",
   "authors": [
@@ -24,7 +24,7 @@
   },
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19.2",
-    "architectury": ">=6.2.43"
+    "minecraft": ">=1.19.3",
+    "architectury": ">=7.0.66"
   }
 }

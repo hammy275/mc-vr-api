@@ -1,7 +1,7 @@
 package net.blf02.vrapi.api.data;
 
-import com.mojang.math.Matrix4f;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 /**
  * IVRData Interface.

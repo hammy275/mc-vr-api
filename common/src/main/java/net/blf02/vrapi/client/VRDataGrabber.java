@@ -1,11 +1,11 @@
 package net.blf02.vrapi.client;
 
-import com.mojang.math.Matrix4f;
 import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.data.VRData;
 import net.blf02.vrapi.data.VRPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -157,8 +157,11 @@ public class VRDataGrabber {
 
     public static Matrix4f fromVivecraftMatrix4f(Object matrixIn) throws InvocationTargetException, IllegalAccessException {
         FloatBuffer buffer = (FloatBuffer) Matrix4f_toFloatBuffer.invoke(matrixIn);
-        Matrix4f matr = new Matrix4f();
-        matr.load(buffer);
+        Matrix4f matr = new Matrix4f(
+                buffer.get(), buffer.get(), buffer.get(), buffer.get(),
+                buffer.get(), buffer.get(), buffer.get(), buffer.get(),
+                buffer.get(), buffer.get(), buffer.get(), buffer.get(),
+                buffer.get(), buffer.get(), buffer.get(), buffer.get());
         return matr;
     }
 

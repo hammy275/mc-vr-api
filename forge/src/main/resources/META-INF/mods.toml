@@ -1,11 +1,11 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[44,)"
 #issueTrackerURL = ""
 license = "GNU GPLv3"
 
 [[mods]]
 modId = "vrapi"
-version = "${version}"
+version = "2.1.1"
 displayName = "mc-vr-api"
 authors = "hammy3502"
 description = '''
@@ -16,20 +16,20 @@ VR API mod that allows mods to integrate into Vivecraft.
 [[dependencies.vrapi]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[44,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.vrapi]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[1.19.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.vrapi]]
 modId = "architectury"
 mandatory = true
-versionRange = "[6.2.43,)"
+versionRange = "[7.0.66,)"
 ordering = "AFTER"
 side = "BOTH"

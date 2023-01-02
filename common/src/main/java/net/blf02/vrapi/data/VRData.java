@@ -1,9 +1,9 @@
 package net.blf02.vrapi.data;
 
-import com.mojang.math.Matrix4f;
 import net.blf02.vrapi.api.data.IVRData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 /**
  * VRData Class.
