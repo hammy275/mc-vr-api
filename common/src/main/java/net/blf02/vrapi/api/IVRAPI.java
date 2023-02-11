@@ -109,4 +109,19 @@ public interface IVRAPI {
      */
     public void triggerHapticPulse(int controllerNum, float durationSeconds, float frequency, float amplitude, float delaySeconds,
                                    @Nullable ServerPlayer player);
+
+    /**
+     * Returns whether the player is currently playing in seated mode.
+     * @param player The player to check.
+     * @return true if the player is playing in seated mode. false otherwise.
+     */
+    public boolean isSeated(Player player);
+
+
+    /**
+     * Returns whether the player is currently playing in left-handed mode.
+     * @param player The player to check.
+     * @return true if the player has left-handed mode enabled. false otherwise.
+     */
+    public boolean isLeftHanded(Player player);
 }

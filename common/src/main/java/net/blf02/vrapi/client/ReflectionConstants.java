@@ -13,6 +13,7 @@ public class ReflectionConstants {
     public static Class<?> MCVR = null; // Note that this class is abstract
     public static Class<?> Matrix4f = null;
     public static Class<?> ControllerType = null; // Enum
+    public static Class<?> VRSettings = null;
     public static Object[] ControllerType_ENUMS = null;
     // Whether Vivecraft is successfully loaded by the library.
     private static boolean hasVivecraft = false;
@@ -26,6 +27,7 @@ public class ReflectionConstants {
             ControllerType = Class.forName(VIVECRAFT_PROVIDER_PACKAGE + ".ControllerType");
             ControllerType_ENUMS = ControllerType.getEnumConstants();
             Matrix4f = Class.forName(VIVECRAFT_MATH_PACKAGE + ".Matrix4f");
+            VRSettings = Class.forName(VIVECRAFT_PACKAGE + ".settings.VRSettings");
             hasVivecraft = true;
         } catch (ClassNotFoundException ignored) {}
     }

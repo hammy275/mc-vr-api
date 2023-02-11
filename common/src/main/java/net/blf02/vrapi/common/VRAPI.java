@@ -48,6 +48,7 @@ public class VRAPI implements IVRAPI {
     @Override
     public boolean apiActive(Player player) {
         if (player.level.isClientSide) {
+            VRDataGrabber.isSelf(player);
             return ServerHasAPI.serverHasAPI;
         } else {
             return Tracker.playersInVR.contains(player.getGameProfile().getName());
@@ -65,9 +66,10 @@ public class VRAPI implements IVRAPI {
     @Nullable
     public IVRPlayer getVRPlayer(Player player) {
         if (player.level.isClientSide) {
+            VRDataGrabber.isSelf(player);
             return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
         } else {
-            return Tracker.playerToVR.get(player.getGameProfile().getName());
+            return Tracker.playerToVR.get(player.getGameProfile().getName()).vrPlayer();
         }
     }
 
@@ -129,6 +131,7 @@ public class VRAPI implements IVRAPI {
     @Override
     public boolean playerInVR(Player player) {
         if (player.level.isClientSide) {
+            VRDataGrabber.isSelf(player);
             return VRDataGrabber.inVR();
         } else {
             return Tracker.playerToVR.containsKey(player.getGameProfile().getName());
@@ -173,6 +176,36 @@ public class VRAPI implements IVRAPI {
         } else if (player != null) {
             Network.CHANNEL.sendToPlayer(player,
                     new VRRumblePacket(controllerNum, durationSeconds, frequency, amplitude, delaySeconds));
+        }
+    }
+
+    /**
+     * Returns whether the player is currently playing in seated mode.
+     * @param player The player to check.
+     * @return true if the player is playing in seated mode. false otherwise.
+     */
+    @Override
+    public boolean isSeated(Player player) {
+        if (player.level.isClientSide) {
+            VRDataGrabber.isSelf(player);
+            return VRDataGrabber.isSeated();
+        } else {
+            return Tracker.playerToVR.get(player.getGameProfile().getName()).isSeated();
+        }
+    }
+
+    /**
+     * Returns whether the player is currently playing in left-handed mode.
+     * @param player The player to check.
+     * @return true if the player has left-handed mode enabled. false otherwise.
+     */
+    @Override
+    public boolean isLeftHanded(Player player) {
+        if (player.level.isClientSide) {
+            VRDataGrabber.isSelf(player);
+            return VRDataGrabber.isLeftHanded();
+        } else {
+            return Tracker.playerToVR.get(player.getGameProfile().getName()).isLeftHanded();
         }
     }
 }
