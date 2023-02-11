@@ -1,7 +1,5 @@
 package net.blf02.forge;
 
-import net.blf02.vrapi.api.VRAPIPlugin;
-import net.blf02.vrapi.api.VRAPIPluginProvider;
 import net.blf02.vrapi.common.VRAPI;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData;

@@ -19,7 +19,8 @@ public class ClientSubscriber {
             }
             VRPlayer vrPlayer = VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
             if (vrPlayer != null) {
-                Network.CHANNEL.sendToServer(new VRDataPacket(vrPlayer));
+                Network.CHANNEL.sendToServer(new VRDataPacket(vrPlayer,
+                        VRDataGrabber.isSeated(), VRDataGrabber.isLeftHanded()));
             }
             if (ServerHasAPI.countForAPIResponse) {
                 if (--ServerHasAPI.apiResponseCountdown < 1) {
