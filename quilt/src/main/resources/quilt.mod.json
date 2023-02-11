@@ -3,7 +3,7 @@
   "quilt_loader": {
     "group": "${group}",
     "id": "vrapi",
-    "version": "2.1.1",
+    "version": "${version}",
     "name": "mc-vr-api",
     "description": "VR API mod that allows mods to integrate into Vivecraft.",
     "authors": ["hammy3502"],
