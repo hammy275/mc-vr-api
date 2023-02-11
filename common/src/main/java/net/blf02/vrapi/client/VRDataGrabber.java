@@ -5,6 +5,7 @@ import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.data.VRData;
 import net.blf02.vrapi.data.VRPlayer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ public class VRDataGrabber {
     // vr field in net.minecraft.client.Minecraft
     public static Field Minecraft_vr;  // Type MCVR
     public static Object Minecraft_vr_Instance; // Type MCVR
+    public static Object vrHolder;
 
     // VRPlayer from Vivecraft
     protected static Method VRPlayer_GET; // Returns VRPlayer
@@ -46,6 +48,11 @@ public class VRDataGrabber {
     // MCVR from Vivecraft
     public static Method MCVR_triggerHapticPulse; // Returns void
 
+    // VRSettings
+    public static Field Minecraft_VRSettings; // In Minecraft patch/ClientDataHolder
+    public static Field VRSettings_seated; // boolean
+    public static Field VRSettings_reverseHands; // boolean (represents left-handedness)
+
     public static void init() {
         if (!ReflectionConstants.clientHasVivecraft()) {
             VRAPIMod.LOGGER.log(Level.INFO, "Vivecraft was not detected! Not reflecting...");
@@ -71,20 +78,23 @@ public class VRDataGrabber {
 
                 Matrix4f_toFloatBuffer = getMethod(ReflectionConstants.Matrix4f, "toFloatBuffer");
 
-                Object vrHolder;
-
                 try {
                     Minecraft_vr = getField(Minecraft.class, "vr");
+                    Minecraft_VRSettings = getField(Minecraft.class, "vrSettings");
                     vrHolder = Minecraft.getInstance();
                 } catch (RuntimeException e) {
                     Class<?> ClientDataHolder = Class.forName(ReflectionConstants.VIVECRAFT_PACKAGE + ".ClientDataHolder");
                     Method getCDHInstance = getMethod(ClientDataHolder, "getInstance");
                     Object cdhInstance = getCDHInstance.invoke(null);
                     Minecraft_vr = getField(ClientDataHolder, "vr");
+                    Minecraft_VRSettings = getField(ClientDataHolder, "vrSettings");
                     vrHolder = cdhInstance;
                 }
 
                 Minecraft_vr_Instance = Minecraft_vr.get(vrHolder);
+
+                VRSettings_seated = getField(ReflectionConstants.VRSettings, "seated");
+                VRSettings_reverseHands = getField(ReflectionConstants.VRSettings, "reverseHands");
 
                 MCVR_triggerHapticPulse = getMethod(ReflectionConstants.MCVR, "triggerHapticPulse",
                         ReflectionConstants.ControllerType, float.class, float.class, float.class, float.class);
@@ -173,6 +183,36 @@ public class VRDataGrabber {
             return vrPlayerRaw != null;
         } catch (InvocationTargetException | IllegalAccessException e) {
             return false; // If we failed to grab the above, we definitely are NOT in VR.
+        }
+    }
+
+    public static boolean isSeated() {
+        if (!ReflectionConstants.clientHasVivecraft()) {
+            throw new IllegalArgumentException("Cannot retrieve seated status of player outside VR!");
+        }
+        try {
+            Object VRSettingsInstance = Minecraft_VRSettings.get(vrHolder);
+            return (boolean) VRSettings_seated.get(VRSettingsInstance);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not get seated status of local player!");
+        }
+    }
+
+    public static boolean isLeftHanded() {
+        if (!ReflectionConstants.clientHasVivecraft()) {
+            throw new IllegalArgumentException("Cannot retrieve hand status of player outside VR!");
+        }
+        try {
+            Object VRSettingsInstance = Minecraft_VRSettings.get(vrHolder);
+            return (boolean) VRSettings_reverseHands.get(VRSettingsInstance);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not get handedness of local player!");
+        }
+    }
+
+    public static void isSelf(Player player) {
+        if (player != Minecraft.getInstance().player) {
+            throw new IllegalArgumentException("Client side can only retrieve player data about themself!");
         }
     }
 

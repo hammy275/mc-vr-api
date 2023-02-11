@@ -1,4 +1,4 @@
-package net.blf02.vrapi.api;
+package net.blf02.forge;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
