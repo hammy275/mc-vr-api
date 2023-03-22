@@ -2,6 +2,7 @@ package net.blf02.vrapi.common;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
+import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.api.IVRAPI;
 import net.blf02.vrapi.api.data.IVRPlayer;
 import net.blf02.vrapi.client.ReflectionConstants;
@@ -9,6 +10,7 @@ import net.blf02.vrapi.client.ServerHasAPI;
 import net.blf02.vrapi.client.VRDataGrabber;
 import net.blf02.vrapi.common.network.Network;
 import net.blf02.vrapi.common.network.packets.VRRumblePacket;
+import net.blf02.vrapi.debug.DevModeData;
 import net.blf02.vrapi.server.Tracker;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -67,6 +69,9 @@ public class VRAPI implements IVRAPI {
     public IVRPlayer getVRPlayer(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
+            if (VRAPIMod.USE_DEV_FEATURES) {
+                return DevModeData.fakePlayer;
+            }
             return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
         } else {
             return Tracker.playerToVR.get(player.getGameProfile().getName()).vrPlayer();
@@ -132,7 +137,7 @@ public class VRAPI implements IVRAPI {
     public boolean playerInVR(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
-            return VRDataGrabber.inVR();
+            return VRDataGrabber.inVR() || VRAPIMod.USE_DEV_FEATURES;
         } else {
             return Tracker.playerToVR.containsKey(player.getGameProfile().getName());
         }
@@ -171,7 +176,9 @@ public class VRAPI implements IVRAPI {
                 VRDataGrabber.MCVR_triggerHapticPulse.invoke(VRDataGrabber.Minecraft_vr_Instance,
                         ReflectionConstants.ControllerType_ENUMS[controllerNum], durationSeconds, frequency, amplitude, delaySeconds);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException("Could not run triggerHapticPulse function. Not sure why, though...");
+                if (!VRAPIMod.USE_DEV_FEATURES) {
+                    throw new RuntimeException("Could not run triggerHapticPulse function. Not sure why, though...");
+                }
             }
         } else if (player != null) {
             Network.CHANNEL.sendToPlayer(player,
@@ -188,6 +195,9 @@ public class VRAPI implements IVRAPI {
     public boolean isSeated(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
+            if (VRAPIMod.USE_DEV_FEATURES) {
+                return false;
+            }
             return VRDataGrabber.isSeated();
         } else {
             return Tracker.playerToVR.get(player.getGameProfile().getName()).isSeated();
@@ -203,6 +213,9 @@ public class VRAPI implements IVRAPI {
     public boolean isLeftHanded(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
+            if (VRAPIMod.USE_DEV_FEATURES) {
+                return false;
+            }
             return VRDataGrabber.isLeftHanded();
         } else {
             return Tracker.playerToVR.get(player.getGameProfile().getName()).isLeftHanded();
