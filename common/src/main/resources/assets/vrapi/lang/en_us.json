@@ -1,10 +1,13 @@
 {
   "message.vrapi.no_api_server": "Server does not have API mod; modded VR features may not work!",
-
   "message.vrapi.version_mismatch": "Version mismatch! The server is on %d but you're on %d!",
 
-  "category.vrapi.dev_keys": "Developer Keys",
+
+  "message.vrapi.dev.in_vr": "Now faking being in VR!",
+  "message.vrapi.dev.out_of_vr": "No longer faking being in VR!",
+  "category.vrapi.dev_keys": "mc-vr-api Developer Keys",
   "key.vrapi.position_left": "Set Controller 1 Pos",
   "key.vrapi.position_right": "Set Controller 0 Pos",
-  "key.vrapi.position_hmd": "Set HMD Pos"
+  "key.vrapi.position_hmd": "Set HMD Pos",
+  "key.vrapi.toggle_vr": "Toggle VR"
 }

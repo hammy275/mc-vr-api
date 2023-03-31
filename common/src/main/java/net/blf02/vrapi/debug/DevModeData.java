@@ -8,6 +8,8 @@ import org.joml.Matrix4f;
 
 public class DevModeData {
 
+    public static boolean devModeInVR = true;
+
     public static Vec3 leftPos = Vec3.ZERO;
     public static Vec3 rightPos = Vec3.ZERO;
     public static Vec3 hmdPos = Vec3.ZERO;
