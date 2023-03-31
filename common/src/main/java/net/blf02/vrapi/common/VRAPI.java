@@ -69,7 +69,7 @@ public class VRAPI implements IVRAPI {
     public IVRPlayer getVRPlayer(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
-            if (VRAPIMod.USE_DEV_FEATURES) {
+            if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return DevModeData.fakePlayer;
             }
             return VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
@@ -137,7 +137,7 @@ public class VRAPI implements IVRAPI {
     public boolean playerInVR(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
-            return VRDataGrabber.inVR() || VRAPIMod.USE_DEV_FEATURES;
+            return VRDataGrabber.inVR() || (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR);
         } else {
             return Tracker.playerToVR.containsKey(player.getGameProfile().getName());
         }
@@ -176,7 +176,7 @@ public class VRAPI implements IVRAPI {
                 VRDataGrabber.MCVR_triggerHapticPulse.invoke(VRDataGrabber.Minecraft_vr_Instance,
                         ReflectionConstants.ControllerType_ENUMS[controllerNum], durationSeconds, frequency, amplitude, delaySeconds);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                if (!VRAPIMod.USE_DEV_FEATURES) {
+                if (!(VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR)) {
                     throw new RuntimeException("Could not run triggerHapticPulse function. Not sure why, though...");
                 }
             }
@@ -195,7 +195,7 @@ public class VRAPI implements IVRAPI {
     public boolean isSeated(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
-            if (VRAPIMod.USE_DEV_FEATURES) {
+            if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return false;
             }
             return VRDataGrabber.isSeated();
@@ -213,7 +213,7 @@ public class VRAPI implements IVRAPI {
     public boolean isLeftHanded(Player player) {
         if (player.level.isClientSide) {
             VRDataGrabber.isSelf(player);
-            if (VRAPIMod.USE_DEV_FEATURES) {
+            if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return false;
             }
             return VRDataGrabber.isLeftHanded();
