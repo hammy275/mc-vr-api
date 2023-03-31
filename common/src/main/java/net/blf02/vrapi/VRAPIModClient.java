@@ -25,10 +25,18 @@ public class VRAPIModClient {
             "category." + VRAPIMod.MOD_ID + ".dev_keys"
     );
 
+    public static KeyMapping TOGGLE_VR_DEV = new KeyMapping(
+            "key." + VRAPIMod.MOD_ID + ".toggle_vr",
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_UP,
+            "category." + VRAPIMod.MOD_ID + ".dev_keys"
+    );
+
     public static void initDebugKeys() {
         KeyMappingRegistry.register(POSITION_LEFT);
         KeyMappingRegistry.register(POSITION_RIGHT);
         KeyMappingRegistry.register(POSITION_HMD);
+        KeyMappingRegistry.register(TOGGLE_VR_DEV);
     }
 
 }
