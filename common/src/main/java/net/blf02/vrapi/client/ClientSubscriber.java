@@ -12,6 +12,7 @@ import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.debug.DevModeData;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,10 +33,11 @@ public class ClientSubscriber {
                 // Toggle VR mode
                 if (VRAPIModClient.TOGGLE_VR_DEV.consumeClick()) {
                     DevModeData.devModeInVR = !DevModeData.devModeInVR;
-                    player.sendSystemMessage(
+                    player.sendMessage(
                             DevModeData.devModeInVR ?
-                                    Component.translatable("message.vrapi.dev.in_vr") :
-                                    Component.translatable("message.vrapi.dev.out_of_vr")
+                                    new TranslatableComponent("message.vrapi.dev.in_vr") :
+                                    new TranslatableComponent("message.vrapi.dev.out_of_vr"),
+                            player.getUUID()
                     );
                 }
 
