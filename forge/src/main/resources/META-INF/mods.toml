@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[44,)"
 #issueTrackerURL = ""
-license = "GNU GPLv3"
+license = "GNU LGPLv3"
 
 [[mods]]
 modId = "vrapi"
