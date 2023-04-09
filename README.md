@@ -123,6 +123,10 @@ To make my own mods (and hopefully other people's mods) work better in the conte
 
 If you want an example of this, I've created a small "demo" mod that shows off the kinds of things this API can do. It's called [mc-vr-playground](https://github.com/hammy3502/mc-vr-playground), which you can download and throw into any installation!
 
+## A Licensing Note
+
+All older versions of mc-vr-api may be licensed under the LGPLv3, the GNU Lesser General Public License v3.0, instead of the GPLv3, the GNU General Public License v3.0.
+
 ## Some Questions and Answers
 
 #### Q: What support is there for 1.17 and 1.18?
