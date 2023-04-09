@@ -11,7 +11,7 @@
     "homepage": "https://github.com/hammy3502/mc-vr-api",
     "sources": "https://github.com/hammy3502/mc-vr-api"
   },
-  "license": "GNU GPLv3",
+  "license": "GNU LGPLv3",
   "icon": "assets/examplemod/icon.png",
   "environment": "*",
   "entrypoints": {
