@@ -36,7 +36,7 @@ public class VersionSyncPacket {
             Player senderP = ctx.get().getPlayer();
             if (senderP instanceof ServerPlayer sender) {
                 if (!this.protocolVersion.equals(Network.PROTOCOL_VERSION)) {
-                    sender.connection.connection.disconnect(Component.translatable(
+                    sender.connection.disconnect(Component.translatable(
                             "message.vrapi.version_mismatch", Network.PROTOCOL_VERSION, this.protocolVersion));
                 } else {
                     Tracker.playersInVR.add(sender.getGameProfile().getName());

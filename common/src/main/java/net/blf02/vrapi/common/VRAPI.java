@@ -14,8 +14,8 @@ import net.blf02.vrapi.debug.DevModeData;
 import net.blf02.vrapi.server.Tracker;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 
 public class VRAPI implements IVRAPI {

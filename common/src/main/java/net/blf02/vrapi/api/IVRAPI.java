@@ -3,8 +3,7 @@ package net.blf02.vrapi.api;
 import net.blf02.vrapi.api.data.IVRPlayer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface IVRAPI {
 
