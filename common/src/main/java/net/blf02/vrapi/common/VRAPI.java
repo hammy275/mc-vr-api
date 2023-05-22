@@ -173,6 +173,7 @@ public class VRAPI implements IVRAPI {
                                    @Nullable ServerPlayer player) {
         if (Platform.getEnvironment() == Env.CLIENT) {
             try {
+                VRDataGrabber.initMinecraftVRInstanceIfNeeded();
                 VRDataGrabber.MCVR_triggerHapticPulse.invoke(VRDataGrabber.Minecraft_vr_Instance,
                         ReflectionConstants.ControllerType_ENUMS[controllerNum], durationSeconds, frequency, amplitude, delaySeconds);
             } catch (IllegalAccessException | InvocationTargetException e) {

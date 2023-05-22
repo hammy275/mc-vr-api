@@ -1,5 +1,6 @@
 package net.blf02.forge;
 
+import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.common.VRAPI;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData;
@@ -8,6 +9,7 @@ import org.objectweb.asm.Type;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +45,7 @@ public class APIProviderInit {
             final Constructor<? extends VRAPIPluginProvider> constructor = ((Class<? extends VRAPIPluginProvider>) clazz).getConstructor();
             return constructor.newInstance();
         } catch (final ReflectiveOperationException | ClassCastException e) {
-            System.out.println("Could not initialize plugin " + type.getClassName());
+            VRAPIMod.LOGGER.log(Level.WARNING, "Could not initialize plugin " + type.getClassName());
             return null;
         }
     }
