@@ -18,7 +18,8 @@ public class VRDataGrabber {
 
     // vr field in net.minecraft.client.Minecraft
     public static Field Minecraft_vr;  // Type MCVR
-    public static Object Minecraft_vr_Instance; // Type MCVR
+    // Not guaranteed to be non-null. Must run initMinecraftVRInstanceIfNeeded before using
+    public static Object Minecraft_vr_Instance; // Type MCVR (if null, needs to initialize at call time)
     public static Object vrHolder;
 
     // VRPlayer from Vivecraft
@@ -91,6 +92,7 @@ public class VRDataGrabber {
                     vrHolder = cdhInstance;
                 }
 
+                // Not guaranteed to be non-null. Must run initMinecraftVRInstanceIfNeeded before using
                 Minecraft_vr_Instance = Minecraft_vr.get(vrHolder);
 
                 VRSettings_seated = getField(ReflectionConstants.VRSettings, "seated");
@@ -213,6 +215,17 @@ public class VRDataGrabber {
     public static void isSelf(Player player) {
         if (player != Minecraft.getInstance().player) {
             throw new IllegalArgumentException("Client side can only retrieve player data about themself!");
+        }
+    }
+
+    public static void initMinecraftVRInstanceIfNeeded() {
+        if (Minecraft_vr_Instance == null) {
+            try {
+                Minecraft_vr_Instance = Minecraft_vr.get(vrHolder);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
