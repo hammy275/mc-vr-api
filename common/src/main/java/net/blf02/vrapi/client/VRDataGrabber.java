@@ -84,7 +84,12 @@ public class VRDataGrabber {
                     Minecraft_VRSettings = getField(Minecraft.class, "vrSettings");
                     vrHolder = Minecraft.getInstance();
                 } catch (RuntimeException e) {
-                    Class<?> ClientDataHolder = Class.forName(ReflectionConstants.VIVECRAFT_PACKAGE + ".ClientDataHolder");
+                    Class<?> ClientDataHolder;
+                    try {
+                        ClientDataHolder = Class.forName(ReflectionConstants.VIVECRAFT_PACKAGE + ".ClientDataHolder");
+                    } catch (ClassNotFoundException e2) {
+                        ClientDataHolder = Class.forName(ReflectionConstants.VIVECRAFT_CLIENT_VR_PACKAGE + ".ClientDataHolderVR");
+                    }
                     Method getCDHInstance = getMethod(ClientDataHolder, "getInstance");
                     Object cdhInstance = getCDHInstance.invoke(null);
                     Minecraft_vr = getField(ClientDataHolder, "vr");
@@ -184,7 +189,7 @@ public class VRDataGrabber {
         try {
             Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Try to get vrPlayer from Vivecraft
             // Since this function may exist in Vivecraft Mixin, we need to check if it's nonnull to see if we're
-            // in VR or not.
+            // in VR or not. This is also cleared when leaving VR for hotswitch, so checking this is fine for that.
             return vrPlayerRaw != null;
         } catch (InvocationTargetException | IllegalAccessException e) {
             return false; // If we failed to grab the above, we definitely are NOT in VR.
