@@ -4,7 +4,9 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.blf02.vrapi.VRAPIMod;
 import net.blf02.vrapi.VRAPIModClient;
+import net.blf02.vrapi.common.VRAPI;
 import net.blf02.vrapi.common.network.Network;
+import net.blf02.vrapi.common.network.packets.LeftVRPacket;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
 import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
 import net.blf02.vrapi.data.VRData;
@@ -18,11 +20,14 @@ import net.minecraft.world.phys.Vec3;
 
 public class ClientSubscriber {
     public static boolean didJoinPacket = false;
+    public static boolean sentVRDisabledPacket = false;
+
     public static void onPlayerTick(Player player) {
         if (player.level.isClientSide) {
             if (!didJoinPacket) {
                 onLogin(player);
                 didJoinPacket = true;
+                sentVRDisabledPacket = false;
             }
 
             VRPlayer vrPlayer = VRDataGrabber.getVRPlayer(VRDataGrabber.PlayerType.WORLD_POST);
@@ -93,11 +98,16 @@ public class ClientSubscriber {
                 }
             }
 
-            if (vrPlayer != null) {
+            if (vrPlayer != null && VRAPI.VRAPIInstance.playerInVR(player)) {
                 boolean seated = (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) ? false : VRDataGrabber.isSeated();
                 boolean leftHanded = (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) ? false : VRDataGrabber.isLeftHanded();
                 Network.CHANNEL.sendToServer(new VRDataPacket(vrPlayer,
                         seated, leftHanded));
+                sentVRDisabledPacket = false;
+            } else if (!VRAPI.VRAPIInstance.playerInVR(player) && !sentVRDisabledPacket) {
+                Network.CHANNEL.sendToServer(new LeftVRPacket());
+                sentVRDisabledPacket = true;
+
             }
             if (ServerHasAPI.countForAPIResponse) {
                 if (--ServerHasAPI.apiResponseCountdown < 1) {
@@ -112,6 +122,7 @@ public class ClientSubscriber {
 
     private static void onLogin(Player player) {
         didJoinPacket = false;
+        sentVRDisabledPacket = false;
         ServerHasAPI.serverHasAPI = false;
         ServerHasAPI.countForAPIResponse = true;
         ServerHasAPI.apiResponseCountdown = 100;
