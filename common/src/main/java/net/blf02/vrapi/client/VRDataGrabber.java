@@ -48,6 +48,7 @@ public class VRDataGrabber {
 
     // MCVR from Vivecraft
     public static Method MCVR_triggerHapticPulse; // Returns void
+    public static Method MCVR_isActive = null; // Returns boolean, hotswitch only
 
     // VRSettings
     public static Field Minecraft_VRSettings; // In Minecraft patch/ClientDataHolder
@@ -105,6 +106,9 @@ public class VRDataGrabber {
 
                 MCVR_triggerHapticPulse = getMethod(ReflectionConstants.MCVR, "triggerHapticPulse",
                         ReflectionConstants.ControllerType, float.class, float.class, float.class, float.class);
+                try {
+                    MCVR_isActive = getMethod(ReflectionConstants.MCVR, "isActive");
+                } catch (RuntimeException ignored) {} // Method only exists in hotswitch, so can ignore otherwise
             } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
                 VRAPIMod.LOGGER.log(Level.SEVERE, "Error: " + e.getMessage());
                 throw new RuntimeException("Fatal error! Could not get! Please report this, along with the error message above!");
@@ -190,7 +194,7 @@ public class VRDataGrabber {
             Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Try to get vrPlayer from Vivecraft
             // Since this function may exist in Vivecraft Mixin, we need to check if it's nonnull to see if we're
             // in VR or not. This is also cleared when leaving VR for hotswitch, so checking this is fine for that.
-            return vrPlayerRaw != null;
+            return vrPlayerRaw != null && hotswitchVRActive();
         } catch (InvocationTargetException | IllegalAccessException e) {
             return false; // If we failed to grab the above, we definitely are NOT in VR.
         }
@@ -235,6 +239,18 @@ public class VRDataGrabber {
             }
 
         }
+    }
+
+    private static boolean hotswitchVRActive() {
+        if (MCVR_isActive != null) {
+            try {
+                initMinecraftVRInstanceIfNeeded();
+                return (boolean) MCVR_isActive.invoke(Minecraft_vr_Instance);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                return false;
+            }
+        }
+        return true; // Non-hotswitch ignores this
     }
 
     public static Field getField(Class<?> clazz, String field) {
