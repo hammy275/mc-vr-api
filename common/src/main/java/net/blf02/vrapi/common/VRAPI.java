@@ -49,7 +49,7 @@ public class VRAPI implements IVRAPI {
      */
     @Override
     public boolean apiActive(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             VRDataGrabber.isSelf(player);
             return ServerHasAPI.serverHasAPI;
         } else {
@@ -67,7 +67,7 @@ public class VRAPI implements IVRAPI {
      */
     @Nullable
     public IVRPlayer getVRPlayer(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             VRDataGrabber.isSelf(player);
             if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return DevModeData.fakePlayer;
@@ -135,7 +135,7 @@ public class VRAPI implements IVRAPI {
      */
     @Override
     public boolean playerInVR(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             VRDataGrabber.isSelf(player);
             return VRDataGrabber.inVR() || (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR);
         } else {
@@ -194,7 +194,7 @@ public class VRAPI implements IVRAPI {
      */
     @Override
     public boolean isSeated(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             VRDataGrabber.isSelf(player);
             if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return false;
@@ -212,7 +212,7 @@ public class VRAPI implements IVRAPI {
      */
     @Override
     public boolean isLeftHanded(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             VRDataGrabber.isSelf(player);
             if (VRAPIMod.USE_DEV_FEATURES && DevModeData.devModeInVR) {
                 return false;

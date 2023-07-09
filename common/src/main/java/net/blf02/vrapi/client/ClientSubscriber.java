@@ -22,7 +22,7 @@ public class ClientSubscriber {
     public static boolean sentVRDisabledPacket = false;
 
     public static void onPlayerTick(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             if (!didJoinPacket) {
                 onLogin(player);
                 didJoinPacket = true;
@@ -67,28 +67,28 @@ public class ClientSubscriber {
                     DevModeData.fakePlayer = vrPlayer;
 
                     // Core position particle display
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(1, 0, 0), 1),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(1, 0, 0), 1),
                             DevModeData.leftPos.x(), DevModeData.leftPos.y(), DevModeData.leftPos.z(),
                             0.01, 0.01, 0.01);
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(0, 0, 1), 1),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 1), 1),
                             DevModeData.rightPos.x(), DevModeData.rightPos.y(), DevModeData.rightPos.z(),
                             0.01, 0.01, 0.01);
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1),
                             DevModeData.hmdPos.x(), DevModeData.hmdPos.y(), DevModeData.hmdPos.z(),
                             0.01, 0.01, 0.01);
 
                     // Rotation particle display
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
                             DevModeData.leftPos.x() + DevModeData.leftRot.x(),
                             DevModeData.leftPos.y() + DevModeData.leftRot.y(),
                             DevModeData.leftPos.z() + DevModeData.leftRot.z(),
                             0.01, 0.01, 0.01);
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
                             DevModeData.rightPos.x() + DevModeData.rightRot.x(),
                             DevModeData.rightPos.y() + DevModeData.rightRot.y(),
                             DevModeData.rightPos.z() + DevModeData.rightRot.z(),
                             0.01, 0.01, 0.01);
-                    player.level.addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
                             DevModeData.hmdPos.x() + DevModeData.hmdRot.x(),
                             DevModeData.hmdPos.y() + DevModeData.hmdRot.y(),
                             DevModeData.hmdPos.z() + DevModeData.hmdRot.z(),
