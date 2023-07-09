@@ -10,6 +10,7 @@ import net.blf02.vrapi.client.VRDataGrabber;
 import net.blf02.vrapi.common.CommonSubscriber;
 import net.blf02.vrapi.common.Constants;
 import net.blf02.vrapi.common.network.Network;
+import net.blf02.vrapi.common.network.packets.LeftVRPacket;
 import net.blf02.vrapi.common.network.packets.VRDataPacket;
 import net.blf02.vrapi.common.network.packets.VRRumblePacket;
 import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
@@ -55,5 +56,7 @@ public class VRAPIMod {
                 VRRumblePacket::handle);
         Network.CHANNEL.register(VersionSyncPacket.class, VersionSyncPacket::encode, VersionSyncPacket::decode,
                 VersionSyncPacket::handle);
+        Network.CHANNEL.register(LeftVRPacket.class, LeftVRPacket::encode, LeftVRPacket::decode,
+                LeftVRPacket::handle);
     }
 }
