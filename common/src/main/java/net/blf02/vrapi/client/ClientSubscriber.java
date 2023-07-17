@@ -12,6 +12,7 @@ import net.blf02.vrapi.common.network.packets.VersionSyncPacket;
 import net.blf02.vrapi.data.VRData;
 import net.blf02.vrapi.data.VRPlayer;
 import net.blf02.vrapi.debug.DevModeData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -23,7 +24,7 @@ public class ClientSubscriber {
     public static boolean sentVRDisabledPacket = false;
 
     public static void onPlayerTick(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level.isClientSide && player == Minecraft.getInstance().player) {
             if (!didJoinPacket) {
                 onLogin(player);
                 didJoinPacket = true;
