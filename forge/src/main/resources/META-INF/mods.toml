@@ -16,20 +16,20 @@ VR API mod that allows mods to integrate into Vivecraft.
 [[dependencies.vrapi]]
 modId = "forge"
 mandatory = true
-versionRange = "[44,)"
+versionRange = "[48,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.vrapi]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.3,)"
+versionRange = "[1.20.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.vrapi]]
 modId = "architectury"
 mandatory = true
-versionRange = "[7.0.66,)"
+versionRange = "[10.0.8,)"
 ordering = "AFTER"
 side = "BOTH"
