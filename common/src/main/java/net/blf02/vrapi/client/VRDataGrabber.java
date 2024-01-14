@@ -124,6 +124,10 @@ public class VRDataGrabber {
 
         try {
             Object vrPlayerRaw = VRPlayer_GET.invoke(null); // Get our "VRPlayer" from Vivecraft}
+            // In case we switch out of VR after the !inVR() check
+            if (vrPlayerRaw == null) {
+                return null;
+            }
             Object vrDataRaw;
             // Get the "VRData" from Vivecraft
             switch (type) {
@@ -132,6 +136,11 @@ public class VRDataGrabber {
                 case ROOM_PRE -> vrDataRaw = VRPlayer_vrdata_room_pre.get(vrPlayerRaw);
                 case ROOM_POST -> vrDataRaw = VRPlayer_vrdata_room_post.get(vrPlayerRaw);
                 default -> vrDataRaw = VRPlayer_vrdata_world_post.get(vrPlayerRaw); // Covers POST and null
+            }
+
+            // In case we switch out of VR after the !inVR() check
+            if (vrDataRaw == null) {
+                return null;
             }
 
 
@@ -173,6 +182,9 @@ public class VRDataGrabber {
             // We shouldn't error here, as we know these fields and methods exist due to getField() and getMethod()
             // combined with having access to Vivecraft's codebase on GitHub
             throw new RuntimeException("Could not obtain data from Vivecraft! Something has gone horribly wrong.");
+        } catch (NullPointerException ignored) {
+            // In case something returns null after the inVR() check due to hotswap.
+            return null;
         }
     }
 
