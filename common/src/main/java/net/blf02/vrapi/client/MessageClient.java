@@ -12,7 +12,7 @@ public class MessageClient {
     public static void msg(String message) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
-            player.sendSystemMessage(Component.literal(message));
+            player.displayClientMessage(Component.literal(message), false);
         }
     }
 

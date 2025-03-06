@@ -14,9 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 public class ClientSubscriber {
     public static boolean didJoinPacket = false;
@@ -32,27 +30,28 @@ public class ClientSubscriber {
                 // Toggle VR mode
                 if (VRAPIModClient.TOGGLE_VR_DEV.consumeClick()) {
                     DevModeData.devModeInVR = !DevModeData.devModeInVR;
-                    player.sendSystemMessage(
+                    player.displayClientMessage(
                             DevModeData.devModeInVR ?
                                     Component.translatable("message.vrapi.dev.in_vr") :
-                                    Component.translatable("message.vrapi.dev.out_of_vr")
+                                    Component.translatable("message.vrapi.dev.out_of_vr"),
+                            false
                     );
                 }
 
                 if (DevModeData.devModeInVR) {
                     if (VRAPIModClient.POSITION_LEFT.isDown()) {
                         DevModeData.leftPos = player.getEyePosition().add(player.getLookAngle().scale(2));
-                        DevModeData.leftRot = Vec3.atLowerCornerOf(player.getDirection().getNormal());
+                        DevModeData.leftRot = player.getDirection().getUnitVec3();
                     }
 
                     if (VRAPIModClient.POSITION_RIGHT.isDown()) {
                         DevModeData.rightPos = player.getEyePosition().add(player.getLookAngle().scale(2));
-                        DevModeData.rightRot = Vec3.atLowerCornerOf(player.getDirection().getNormal());
+                        DevModeData.rightRot = player.getDirection().getUnitVec3();
                     }
 
                     if (VRAPIModClient.POSITION_HMD.isDown()) {
                         DevModeData.hmdPos = player.getEyePosition().add(player.getLookAngle().scale(2));
-                        DevModeData.hmdRot = Vec3.atLowerCornerOf(player.getDirection().getNormal());
+                        DevModeData.hmdRot = player.getDirection().getUnitVec3();
                     }
 
                     VRData hmdData = new VRData(DevModeData.hmdPos, DevModeData.hmdRot, 0, new Matrix4f());
@@ -62,28 +61,28 @@ public class ClientSubscriber {
                     DevModeData.fakePlayer = vrPlayer;
 
                     // Core position particle display
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(1, 0, 0), 1),
+                    player.level().addParticle(new DustParticleOptions(0xFF0000, 1),
                             DevModeData.leftPos.x(), DevModeData.leftPos.y(), DevModeData.leftPos.z(),
                             0.01, 0.01, 0.01);
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 1), 1),
+                    player.level().addParticle(new DustParticleOptions(0x0000FF, 1),
                             DevModeData.rightPos.x(), DevModeData.rightPos.y(), DevModeData.rightPos.z(),
                             0.01, 0.01, 0.01);
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(1, 1, 1), 1),
+                    player.level().addParticle(new DustParticleOptions(0xFFFFFF, 1),
                             DevModeData.hmdPos.x(), DevModeData.hmdPos.y(), DevModeData.hmdPos.z(),
                             0.01, 0.01, 0.01);
 
                     // Rotation particle display
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(0x000000, 0.5f),
                             DevModeData.leftPos.x() + DevModeData.leftRot.x(),
                             DevModeData.leftPos.y() + DevModeData.leftRot.y(),
                             DevModeData.leftPos.z() + DevModeData.leftRot.z(),
                             0.01, 0.01, 0.01);
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(0x000000, 0.5f),
                             DevModeData.rightPos.x() + DevModeData.rightRot.x(),
                             DevModeData.rightPos.y() + DevModeData.rightRot.y(),
                             DevModeData.rightPos.z() + DevModeData.rightRot.z(),
                             0.01, 0.01, 0.01);
-                    player.level().addParticle(new DustParticleOptions(new Vector3f(0, 0, 0), 0.5f),
+                    player.level().addParticle(new DustParticleOptions(0x000000, 0.5f),
                             DevModeData.hmdPos.x() + DevModeData.hmdRot.x(),
                             DevModeData.hmdPos.y() + DevModeData.hmdRot.y(),
                             DevModeData.hmdPos.z() + DevModeData.hmdRot.z(),
@@ -109,8 +108,8 @@ public class ClientSubscriber {
                     Network.CHANNEL.sendToServer(new VersionSyncPacket(Network.PROTOCOL_VERSION));
                 }
                 if (--ServerHasAPI.apiResponseCountdown < 1) {
-                    player.sendSystemMessage(
-                            Component.translatable("message.vrapi.no_api_server"));
+                    player.displayClientMessage(
+                            Component.translatable("message.vrapi.no_api_server"), false);
                 }
             }
         }
