@@ -20,6 +20,7 @@ public interface Platform {
     public <T> void sendToPlayer(ServerPlayer player, T message, NetworkChannel.NetworkRegistrationData<T> data);
 
     // Event hooks
+    public void registerCommonSetup(Consumer<Void> setup);
     public void registerClientPostTick(Consumer<Player> ticker);
     public void registerServerPostTick(Consumer<Player> ticker);
     public void registerClientPlayerQuit(Consumer<Player> quitHandler);

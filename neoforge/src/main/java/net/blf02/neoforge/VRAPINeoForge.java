@@ -13,8 +13,15 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 @Mod(VRAPIMod.MOD_ID)
 public class VRAPINeoForge {
+
+    public static List<Consumer<Void>> setups = new ArrayList<>();
+
     public VRAPINeoForge(IEventBus modBus) {
         Plat.INSTANCE = new PlatformImpl();
         modBus.addListener(this::commonSetup);
@@ -35,7 +42,10 @@ public class VRAPINeoForge {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        APIProviderInit.init();
+        event.enqueueWork(() -> {
+            setups.forEach(setup -> setup.accept(null));
+            APIProviderInit.init();
+        });
     }
 
     private void registerKeyMappings(RegisterKeyMappingsEvent event) {

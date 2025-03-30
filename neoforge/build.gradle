@@ -6,6 +6,9 @@ repositories {
     maven {
         url "https://maven.neoforged.net/releases/"
     }
+    maven {
+        url = "https://cursemaven.com"
+    }
 }
 
 architectury {
@@ -30,6 +33,7 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+    modApi "curse.maven:vivecraft-667903:6355838"
 }
 
 processResources {

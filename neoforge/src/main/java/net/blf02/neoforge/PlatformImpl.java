@@ -63,6 +63,11 @@ public class PlatformImpl implements Platform {
     }
 
     @Override
+    public void registerCommonSetup(Consumer<Void> setup) {
+        VRAPINeoForge.setups.add(setup);
+    }
+
+    @Override
     public void registerClientPostTick(Consumer<Player> ticker) {
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             if (Minecraft.getInstance().player != null) {

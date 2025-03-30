@@ -43,7 +43,7 @@ public class VRAPIMod {
         // Only bother to grab VR Data when on the client-side
         if (Plat.INSTANCE.isClient()) {
             ReflectionConstants.init();
-            VRDataGrabber.init();
+            Plat.INSTANCE.registerCommonSetup(ignored -> VRDataGrabber.init());
             // Set USE_DEV_FEATURES based on if in dev environment and Vivecraft not detected.
             if (!ReflectionConstants.clientHasVivecraft() && Plat.INSTANCE.isDevelopmentEnvironment()) {
                 USE_DEV_FEATURES = true;

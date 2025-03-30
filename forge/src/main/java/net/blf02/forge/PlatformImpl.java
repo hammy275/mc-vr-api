@@ -69,6 +69,11 @@ public class PlatformImpl implements Platform {
     }
 
     @Override
+    public void registerCommonSetup(Consumer<Void> setup) {
+        VRAPIForge.setups.add(setup);
+    }
+
+    @Override
     public void registerClientPostTick(Consumer<Player> ticker) {
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             if (event.phase == TickEvent.Phase.END && Minecraft.getInstance().player != null) {

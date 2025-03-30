@@ -10,8 +10,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 @Mod(VRAPIMod.MOD_ID)
 public class VRAPIForge {
+
+    public static List<Consumer<Void>> setups = new ArrayList<>();
+
     public VRAPIForge() {
         Plat.INSTANCE = new PlatformImpl();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
@@ -27,7 +34,10 @@ public class VRAPIForge {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        APIProviderInit.init();
+        event.enqueueWork(() -> {
+            setups.forEach(setup -> setup.accept(null));
+            APIProviderInit.init();
+        });
     }
 
     private void registerKeyMappings(RegisterKeyMappingsEvent event) {

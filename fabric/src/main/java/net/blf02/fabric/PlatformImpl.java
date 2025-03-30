@@ -56,6 +56,11 @@ public class PlatformImpl implements Platform {
     }
 
     @Override
+    public void registerCommonSetup(Consumer<Void> setup) {
+        setup.accept(null);
+    }
+
+    @Override
     public void registerClientPostTick(Consumer<Player> ticker) {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
