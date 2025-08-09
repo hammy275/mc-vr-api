@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -75,8 +74,8 @@ public class PlatformImpl implements Platform {
 
     @Override
     public void registerClientPostTick(Consumer<Player> ticker) {
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
-            if (event.phase == TickEvent.Phase.END && Minecraft.getInstance().player != null) {
+        TickEvent.ClientTickEvent.Post.BUS.addListener((TickEvent.ClientTickEvent.Post event) -> {
+            if (Minecraft.getInstance().player != null) {
                 ticker.accept(Minecraft.getInstance().player);
             }
         });
@@ -84,23 +83,21 @@ public class PlatformImpl implements Platform {
 
     @Override
     public void registerServerPostTick(Consumer<Player> ticker) {
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent event) -> {
-            if (event.phase == TickEvent.Phase.END) {
-                event.getServer().getPlayerList().getPlayers().forEach(ticker);
-            }
+        TickEvent.ServerTickEvent.Post.BUS.addListener((TickEvent.ServerTickEvent.Post event) -> {
+            event.getServer().getPlayerList().getPlayers().forEach(ticker);
         });
     }
 
     @Override
     public void registerClientPlayerQuit(Consumer<Player> quitHandler) {
-        MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> {
+        ClientPlayerNetworkEvent.LoggingOut.BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> {
             quitHandler.accept(event.getPlayer());
         });
     }
 
     @Override
     public void registerOnPlayerJoin(Consumer<ServerPlayer> joinHandler) {
-        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+        PlayerEvent.PlayerLoggedInEvent.BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 joinHandler.accept(sp);
             }
@@ -109,7 +106,7 @@ public class PlatformImpl implements Platform {
 
     @Override
     public void registerOnPlayerDisconnect(Consumer<ServerPlayer> disconnectHandler) {
-        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedOutEvent event) -> {
+        PlayerEvent.PlayerLoggedOutEvent.BUS.addListener((PlayerEvent.PlayerLoggedOutEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 disconnectHandler.accept(sp);
             }

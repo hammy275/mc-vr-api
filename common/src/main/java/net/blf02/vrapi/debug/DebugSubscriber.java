@@ -13,17 +13,17 @@ public class DebugSubscriber {
         if (VRAPI.VRAPIInstance.playerInVR(player) && player instanceof ServerPlayer sp) {
             IVRData data = VRAPI.VRAPIInstance.getVRPlayer(player).getHMD();
             Vec3 pos = data.position().add(data.getLookAngle());
-            sp.serverLevel().sendParticles(ParticleTypes.SNOWFLAKE,
+            sp.level().sendParticles(ParticleTypes.SNOWFLAKE,
                     pos.x, pos.y, pos.z, 1,
                     0.01, 0.01, 0.01, 0.0001);
             data = VRAPI.VRAPIInstance.getVRPlayer(player).getController1();
             pos = data.position().add(data.getLookAngle());
-            sp.serverLevel().sendParticles(ParticleTypes.ANGRY_VILLAGER,
+            sp.level().sendParticles(ParticleTypes.ANGRY_VILLAGER,
                     pos.x, pos.y, pos.z, 1,
                     0.01, 0.01, 0.01, 0.0001);
             data = VRAPI.VRAPIInstance.getVRPlayer(player).getController0();
             pos = data.position().add(data.getLookAngle());
-            sp.serverLevel().sendParticles(ParticleTypes.FALLING_WATER,
+            sp.level().sendParticles(ParticleTypes.FALLING_WATER,
                     pos.x, pos.y, pos.z, 1,
                     0.01, 0.01, 0.01, 0.0001);
             VRAPI.VRAPIInstance.triggerHapticPulse(0, 0.025f, sp);

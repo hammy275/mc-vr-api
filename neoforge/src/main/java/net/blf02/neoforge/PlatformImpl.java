@@ -12,6 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -47,7 +48,7 @@ public class PlatformImpl implements Platform {
             RegistryFriendlyByteBuf buffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), ClientRegistryAccess.get(), ConnectionType.NEOFORGE);
             buffer.writeInt(data.id());
             data.encoder().accept(message, buffer);
-            PacketDistributor.sendToServer(new BufferPacket(buffer));
+            ClientPacketDistributor.sendToServer(new BufferPacket(buffer));
         } catch (UnsupportedOperationException ignored) {} // Ignore errors from sending packets when the other side can't receive
     }
 

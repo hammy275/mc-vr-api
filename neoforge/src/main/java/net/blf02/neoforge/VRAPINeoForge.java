@@ -9,8 +9,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.ArrayList;
@@ -28,14 +28,12 @@ public class VRAPINeoForge {
 
         if (Plat.INSTANCE.isClient()) {
             modBus.addListener(this::registerKeyMappings);
+            modBus.addListener(this::registerClientPayloadHandlers);
         }
         modBus.addListener((RegisterPayloadHandlersEvent event) -> {
             PayloadRegistrar registrar = event.registrar(VRAPIMod.MOD_ID);
             registrar.optional().playBidirectional(BufferPacket.ID, BufferPacket.CODEC,
-                    new DirectionalPayloadHandler<>(
-                            (packet, ctx) -> ctx.enqueueWork(() -> Network.CHANNEL.doReceive(null, packet.buffer())),
-                            (packet, ctx) -> ctx.enqueueWork(() -> Network.CHANNEL.doReceive((ServerPlayer) ctx.player(), packet.buffer()))
-                    ));
+                    (packet, payloadContext) -> payloadContext.enqueueWork(() -> Network.CHANNEL.doReceive((ServerPlayer) payloadContext.player(), packet.buffer())));
         });
 
         VRAPIMod.init();
@@ -50,5 +48,10 @@ public class VRAPINeoForge {
 
     private void registerKeyMappings(RegisterKeyMappingsEvent event) {
         PlatformImpl.keyMappingsToRegister.forEach(o -> event.register((KeyMapping) o));
+    }
+
+    private void registerClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
+        event.register(BufferPacket.ID,
+                (packet, payloadContext) -> payloadContext.enqueueWork(() -> Network.CHANNEL.doReceive(null, packet.buffer())));
     }
 }
