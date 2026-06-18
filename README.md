@@ -1,5 +1,9 @@
 # MC VR API
 
+## DEPRECATION NOTICE
+
+MC VR API is deprecated, and will no longer be updated for new Minecraft versions. Instead, use [Vivecraft's Official API](https://github.com/Vivecraft/VivecraftMod/wiki/Mod-API).
+
 ## What?
 
 This mod serves to act as an API for Vivecraft, to allow mod developers to interface with VR-specific features.
